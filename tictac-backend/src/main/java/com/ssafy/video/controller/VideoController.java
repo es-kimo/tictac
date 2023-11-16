@@ -6,25 +6,30 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ssafy.video.model.dto.Video;
+import com.ssafy.video.model.service.CommentService;
 import com.ssafy.video.model.service.VideoService;
 
 import io.swagger.annotations.ApiParam;
+import io.swagger.v3.oas.annotations.parameters.RequestBody;
 
 @RestController
 @CrossOrigin
 public class VideoController {
 
-	@Autowired
-	CommentService CommentService;
-
+	
 	@Autowired
 	VideoService videoService;
 
+	// 1. 영상 리스트
+	
 	// 전체 비디오 리스트 가져오기
 	@GetMapping("/videoList")
 	private ResponseEntity<?> wholeList() {
@@ -77,6 +82,39 @@ public class VideoController {
 			return new ResponseEntity<Void>(HttpStatus.NO_CONTENT);
 		}
 		return new ResponseEntity<List<Video>>(list, HttpStatus.OK);
+	}
+	
+	
+	// 2. 영상 1개
+	
+	
+	// videoId 원래 int인거 고려안해도 되나
+	// 영상 상세 조회
+	@GetMapping("/video/{videoId}")
+	private ResponseEntity<Video> detail(@PathVariable String videoId) {
+		Video video = videoService.getVideoDetail(videoId);
+		return new ResponseEntity<Video>(video, HttpStatus.OK);
+	}
+	
+	// 영상 업로드
+	@PostMapping("/video")
+	private ResponseEntity<Video> upload(@RequestBody Video video) {
+		videoService.insertVideo(video);
+		return new ResponseEntity<Video>(video, HttpStatus.OK);
+	}
+	
+	// 영상 수정
+	@PutMapping("/video")
+	private ResponseEntity<Void> update(@RequestBody Video video) {
+		videoService.updateVideo(video);
+		return new ResponseEntity<Void>(HttpStatus.OK);
+	}
+	
+	// 영상 삭제
+	@DeleteMapping("/video")
+	private ResponseEntity<Void> delete(@RequestBody Video video) {
+		videoService.deleteVideo(video);
+		return new ResponseEntity<Void>(HttpStatus.OK);
 	}
 
 }
