@@ -3,7 +3,7 @@
     <nav class="nav">
       <ul class="list-nav">
         <li>
-          <RouterLink to="">
+          <RouterLink to="/">
             <IconBase stroke-width="0.5">
               <IconHome></IconHome>
             </IconBase>
@@ -11,11 +11,11 @@
           </RouterLink>
         </li>
         <li>
-          <RouterLink to="/hi">
+          <RouterLink to="/@ryurlah">
             <IconBase stroke-width="0.5">
               <IconHome></IconHome>
             </IconBase>
-            홈
+            마이페이지
           </RouterLink>
         </li>
       </ul>
@@ -47,6 +47,7 @@ import { RouterLink } from 'vue-router';
 
   margin: 20px 0 26px 8px;
   box-shadow: rgba(0, 0, 0, 0.06) 0px 2px 8px;
+  height: auto;
 }
 
 .nav a {
@@ -54,7 +55,7 @@ import { RouterLink } from 'vue-router';
 }
 
 .list-nav {
-  border-bottom: 1px solid;
+  border-bottom: 1px solid var(--vt-c-text-dark-2);
 }
 
 .list-nav li a {

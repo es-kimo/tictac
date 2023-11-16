@@ -3,13 +3,13 @@
     <h1 class="tit-header"><RouterLink to="/">TicTac</RouterLink></h1>
     <SearchBar></SearchBar>
     <div class="cont-nav">
-      <button class="btn-upload">
+      <RouterLink to="/upload" class="btn-upload">
         <IconBase icon-name="upload">
           <IconPlus></IconPlus>
         </IconBase>
         업로드
-      </button>
-      <RouterLink to="">
+      </RouterLink>
+      <RouterLink to="/@ryurlah">
         <img class="img-profile" src="@/assets/sample/excitedinseun.png" alt="" />
       </RouterLink>
     </div>
@@ -29,7 +29,7 @@ import IconPlus from '../icon/IconPlus.vue';
   display: flex;
   justify-content: space-between;
   align-items: center;
-  border-bottom: 1px solid var(--vt-c-divider-dark-1);
+  border-bottom: 1px solid var(--vt-c-text-dark-2);
 
   padding: 0 16px 0 24px;
 }

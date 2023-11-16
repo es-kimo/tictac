@@ -1,19 +1,9 @@
 <script setup lang="ts">
-import { RouterLink, RouterView } from 'vue-router';
-import TheHeader from './components/common/TheHeader.vue';
-import TheSideNav from './components/common/TheSideNav.vue';
+import { RouterView } from 'vue-router';
 </script>
 
 <template>
-  <TheHeader />
-  <div class="cont-main">
-    <TheSideNav />
-    <RouterView />
-  </div>
+  <RouterView></RouterView>
 </template>
 
-<style scoped>
-.cont-main {
-  display: flex;
-}
-</style>
+<style scoped></style>
