@@ -1,10 +1,9 @@
 package com.ssafy.video.model.dao;
 
-public class UserDao {
+import com.ssafy.video.model.dto.User;
 
-	public static void main(String[] args) {
-		// TODO Auto-generated method stub
+public interface UserDao {
 
-	}
-
+	User selectOne(String userId);
+	
 }
