@@ -33,7 +33,7 @@ public class VideoController {
 	// 전체 비디오 리스트 가져오기
 	@GetMapping("/videoList")
 	private ResponseEntity<?> wholeList() {
-		List<Video> list = videoService.getWholeList());
+		List<Video> list = videoService.getWholeList();
 		return new ResponseEntity<List<Video>>(list, HttpStatus.OK);
 	}
 
@@ -46,7 +46,7 @@ public class VideoController {
 			    value = "search condition",
 			    example = "skate board",
 			    required = true) String searchWord) {
-			List<Video> list = videoService.getListBySearchWord(searchWord));
+			List<Video> list = videoService.getListBySearchWord(searchWord);
 			if (list == null || list.size() == 0) {
 				return new ResponseEntity<Void>(HttpStatus.NO_CONTENT);
 			}
@@ -56,7 +56,7 @@ public class VideoController {
 	// 카테고리별 영상 리스트 가져오기
 	@GetMapping("/videoList/{categoryId}")
 	private ResponseEntity<?> categoryList(@PathVariable String categoryId) {
-		List<Video> list = videoService.getListByCategoryID(categoryId);
+		List<Video> list = videoService.getListByCategoryId(categoryId);
 		if (list == null || list.size() == 0) {
 			return new ResponseEntity<Void>(HttpStatus.NO_CONTENT);
 		}
@@ -88,10 +88,10 @@ public class VideoController {
 	// 2. 영상 1개
 	
 	
-	// videoId 원래 int인거 고려안해도 되나
+	// videoId 원래 int인거 고려안해도 되나? String으로 받아야하나?
 	// 영상 상세 조회
 	@GetMapping("/video/{videoId}")
-	private ResponseEntity<Video> detail(@PathVariable String videoId) {
+	private ResponseEntity<Video> detail(@PathVariable int videoId) {
 		Video video = videoService.getVideoDetail(videoId);
 		return new ResponseEntity<Video>(video, HttpStatus.OK);
 	}
@@ -99,21 +99,21 @@ public class VideoController {
 	// 영상 업로드
 	@PostMapping("/video")
 	private ResponseEntity<Video> upload(@RequestBody Video video) {
-		videoService.insertVideo(video);
+		videoService.uploadVideo(video);
 		return new ResponseEntity<Video>(video, HttpStatus.OK);
 	}
 	
 	// 영상 수정
 	@PutMapping("/video")
 	private ResponseEntity<Void> update(@RequestBody Video video) {
-		videoService.updateVideo(video);
+		videoService.modifyVideo(video);
 		return new ResponseEntity<Void>(HttpStatus.OK);
 	}
 	
 	// 영상 삭제
 	@DeleteMapping("/video")
-	private ResponseEntity<Void> delete(@RequestBody Video video) {
-		videoService.deleteVideo(video);
+	private ResponseEntity<Void> delete(int videoId) {
+		videoService.removeVideo(videoId);
 		return new ResponseEntity<Void>(HttpStatus.OK);
 	}
 
