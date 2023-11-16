@@ -11,26 +11,25 @@ const router = createRouter({
     {
       path: '/',
       name: 'home',
-      component: HomeView
-    },
-    // 유저 정보
-    {
-      path: '/:username',
-      name: 'user',
-      component: UserView,
+      component: HomeView,
       children: [
-        // 비디오 디테일
+        // 유저 정보
         {
-          path: '/video/:videoId',
+          path: '/:username',
+          name: 'user',
+          component: UserView
+        },
+        {
+          path: '/upload',
+          name: 'upload',
+          component: VideoUploadView
+        },
+        {
+          path: '/:username/video/:videoId',
           name: 'videoDetail',
           component: VideoView
         }
       ]
-    },
-    {
-      path: '/upload',
-      name: 'upload',
-      component: VideoUploadView
     }
   ]
 });

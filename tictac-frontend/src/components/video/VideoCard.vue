@@ -1,7 +1,7 @@
 <template>
   <div class="wrapper">
     <div class="cont-video">
-      <RouterLink to="">
+      <button @click="addHashToLocation">
         <picture>
           <img
             @mouseover="emitHover"
@@ -22,7 +22,7 @@
         >
           <source src="@/assets/sample/noeul.mp4" />
         </video>
-      </RouterLink>
+      </button>
 
       <div class="cont-control">
         <div>
@@ -44,9 +44,9 @@
 </template>
 
 <script setup lang="ts">
-import { RouterLink } from 'vue-router';
 import { ref, computed } from 'vue';
 import type { Ref } from 'vue';
+import { useRouter } from 'vue-router';
 
 import IconBase from '../icon/IconBase.vue';
 import IconPlay from '../icon/IconPlay.vue';
@@ -71,6 +71,13 @@ const handleVolumeBtn = () => {
   showVolumeOn.value = !showVolumeOn.value;
   videoElem.value!.muted = !videoElem.value!.muted;
 };
+
+//영상 모달 띄우기
+const router = useRouter();
+const addHashToLocation = () => {
+  history.pushState({}, '', '/@' + 'ryurlah' + '/video/' + encodeURIComponent(10000));
+};
+//10000 -> props.video.id
 </script>
 
 <style scoped>
