@@ -16,16 +16,16 @@ public class SwaggerConfig {
 	public Docket api() {
 		return new Docket(DocumentationType.SWAGGER_2)
 				.select()
-				.apis(RequestHandlerSelectors.basePackage("com.ssafy.board.controller"))
-				.paths(PathSelectors.ant("/api*/**")) 
+				.apis(RequestHandlerSelectors.basePackage("com.ssafy.video.controller"))
+				.paths(PathSelectors.ant("/**")) 
 				.build()
 				.apiInfo(apiInfo());
 	}
 	
 	private ApiInfo apiInfo() {
 		return new ApiInfoBuilder()
-				.title("SSAFY 10기 BOARD REST API")
-				.description("엄청나게 대단한 게시판을 위한 레스트풀한 서버 입니다.")
+				.title("SSAFY 10기 VIDEO REST API")
+				.description("엄청나게 대단한 틱택을 위한 레스트풀한 서버 입니다.")
 				.version("0.1")
 				.build();
 	}
