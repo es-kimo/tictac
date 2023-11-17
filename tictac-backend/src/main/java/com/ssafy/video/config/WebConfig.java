@@ -30,9 +30,9 @@ public class WebConfig implements WebMvcConfigurer {
 	// 필드를 통해 의존성을 주입 받고 등록하면된다
 	@Override
 	public void addInterceptors(InterceptorRegistry registry) {
-		registry.addInterceptor(jwtInterceptor)
-		.addPathPatterns("/**")
-		.excludePathPatterns("/login", "/swagger-resources/**", "/swagger-ui/**", "/v2/api-docs");
+//		registry.addInterceptor(jwtInterceptor)
+//		.addPathPatterns("/**")
+//		.excludePathPatterns("/login", "/swagger-resources/**", "/swagger-ui/**", "/v2/api-docs");
 	}
 	
 	//CORS 에러를 해결하기 위해서 컨트롤러에 각각 작성을 할수도 있지만 공통처리(전역처리)라면 요기다 한방에 가넝
