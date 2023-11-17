@@ -9,6 +9,7 @@
         </IconBase>
         업로드
       </RouterLink>
+      <RouterLink to="/login" class="btn-login"> 로그인 </RouterLink>
       <RouterLink to="/@ryurlah">
         <img class="img-profile" src="@/assets/sample/excitedinseun.png" alt="" />
       </RouterLink>
@@ -43,6 +44,7 @@ import IconPlus from '../icon/IconPlus.vue';
   display: flex;
   gap: 20px;
   align-items: center;
+  font-weight: bold;
 }
 
 .btn-upload {
@@ -54,8 +56,21 @@ import IconPlus from '../icon/IconPlus.vue';
   border: 1px solid var(--vt-c-text-dark-2);
 }
 
+.btn-login {
+  padding: 4px 16px;
+  font-size: 16px;
+  border: 1px solid var(--vt-c-text-dark-2);
+  background-color: hsla(160, 100%, 37%, 1);
+  color: var(--vt-c-white-soft);
+  border-radius: 4px;
+}
+
+.btn-login:hover {
+  background-color: rgb(0, 165, 110);
+}
+
 .btn-upload:hover {
-  background-color: var(--vt-c-divider-dark-2);
+  background-color: var(--vt-c-text-dark-2);
 }
 
 .img-profile {

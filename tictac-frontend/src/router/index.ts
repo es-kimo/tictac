@@ -4,6 +4,7 @@ import HomeView from '@/views/HomeView.vue';
 import UserView from '@/views/UserView.vue';
 import VideoView from '@/views/VideoView.vue';
 import VideoUploadView from '@/views/VideoUploadView.vue';
+import LoginView from '@/views/LoginView.vue';
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -15,7 +16,8 @@ const router = createRouter({
       children: [
         // 유저 정보
         {
-          path: '/:username',
+          // @으로 시작하는 것만 매핑 -> 다른 것과 구분하기 위함 예를 들면 login
+          path: '/:username(@.+)',
           name: 'user',
           component: UserView
         },
@@ -30,6 +32,11 @@ const router = createRouter({
           component: VideoView
         }
       ]
+    },
+    {
+      path: '/login',
+      name: 'login',
+      component: LoginView
     }
   ]
 });
