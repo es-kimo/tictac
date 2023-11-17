@@ -33,7 +33,6 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 -- Table `finaldb`.`Video`
 -- -----------------------------------------------------
-DROP TABLE `finaldb`.`Video`;
 CREATE TABLE IF NOT EXISTS `finaldb`.`Video` (
   `videoId` INT NOT NULL AUTO_INCREMENT,
   `User_userId` VARCHAR(20) NOT NULL,
@@ -79,7 +78,6 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 -- Table `finaldb`.`Comment`
 -- -----------------------------------------------------
-DROP TABLE `finaldb`.`Comment`;
 CREATE TABLE IF NOT EXISTS `finaldb`.`Comment` (
   `Video_videoId` INT NOT NULL,
   `commentId` INT NOT NULL AUTO_INCREMENT,
