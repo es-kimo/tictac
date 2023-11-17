@@ -1,11 +1,8 @@
-import { ref, computed } from 'vue';
+import { ref } from 'vue';
 import { defineStore } from 'pinia';
 import axios from 'axios';
-import { useRouter } from 'vue-router';
 
 const REST_VIDEO_API = `http://localhost:8080/`;
-
-const router = useRouter();
 
 export const useUserStore = defineStore('user', () => {
   const loginUserId = ref('');
@@ -27,8 +24,6 @@ export const useUserStore = defineStore('user', () => {
         loginUserId.value = id['userId'];
         loginUsername.value = id['userName'];
         loginEmail.value = id['email'];
-
-        router.push({ name: 'home' }); // home으로 가게하는게 맞을까??
       })
       .catch((err: Error) => {
         console.log(err);
