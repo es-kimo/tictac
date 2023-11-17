@@ -1,19 +1,18 @@
 package com.ssafy.video.model.dto;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
-
 public class Video {
 	
 	private int videoId;
 	private String userId;
 	private String content;
 	private String videoSrc;
+	private String orgVideoSrc;
 	private String regDate;
 	private int heartCnt;
 	private int bookmarkCnt;
 	private int viewCnt;
 	private String thumbnailImgSrc;
+	private String orgThumbnailImgSrc;
 	private String categoryId;
 	
 	public Video() {}
@@ -103,6 +102,22 @@ public class Video {
 		return "Video [videoId=" + videoId + ", userId=" + userId + ", content=" + content + ", videoSrc=" + videoSrc
 				+ ", regDate=" + regDate + ", heartCnt=" + heartCnt + ", bookmarkCnt=" + bookmarkCnt + ", viewCnt="
 				+ viewCnt + ", thumbnailImgSrc=" + thumbnailImgSrc + ", categoryId=" + categoryId + "]";
+	}
+
+	public String getOrgVideoSrc() {
+		return orgVideoSrc;
+	}
+
+	public void setOrgVideoSrc(String orgVideoSrc) {
+		this.orgVideoSrc = orgVideoSrc;
+	}
+
+	public String getOrgThumbnailImgSrc() {
+		return orgThumbnailImgSrc;
+	}
+
+	public void setOrgThumbnailImgSrc(String orgThumbnailImgSrc) {
+		this.orgThumbnailImgSrc = orgThumbnailImgSrc;
 	}
 	
 	

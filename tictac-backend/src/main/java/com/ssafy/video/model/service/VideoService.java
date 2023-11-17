@@ -2,6 +2,8 @@ package com.ssafy.video.model.service;
 
 import java.util.List;
 
+import org.springframework.web.multipart.MultipartFile;
+
 import com.ssafy.video.model.dto.Video;
 
 public interface VideoService {
@@ -18,7 +20,7 @@ public interface VideoService {
 	
 	Video getVideoDetail(int videoId);
 
-	int uploadVideo(Video video);
+	int uploadVideo(Video video, MultipartFile file);
 
 	int modifyVideo(Video video);
 

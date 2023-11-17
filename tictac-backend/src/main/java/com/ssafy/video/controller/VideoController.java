@@ -11,7 +11,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.ssafy.video.model.dto.Video;
 import com.ssafy.video.model.service.CommentService;
@@ -98,8 +100,8 @@ public class VideoController {
 	
 	// 영상 업로드
 	@PostMapping("/video")
-	private ResponseEntity<Video> upload(@RequestBody Video video) {
-		videoService.uploadVideo(video);
+	private ResponseEntity<Video> upload(Video video, @RequestPart MultipartFile file) {
+		videoService.uploadVideo(video, file);
 		return new ResponseEntity<Video>(video, HttpStatus.OK);
 	}
 	

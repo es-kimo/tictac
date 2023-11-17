@@ -1,11 +1,13 @@
 <template>
   <div>
-    <div>upload</div>
+    <VideoUploadCard></VideoUploadCard>
     <button @click="uploadVideo">임시버튼</button>
   </div>
 </template>
 
 <script setup lang="ts">
+import VideoUploadCard from '@/components/video/VideoUploadCard.vue';
+
 import { ref } from 'vue';
 import { useVideoStore } from '@/stores/video';
 import { useRoute } from 'vue-router';

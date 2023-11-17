@@ -17,7 +17,7 @@ const router = createRouter({
         // 유저 정보
         {
           // @으로 시작하는 것만 매핑 -> 다른 것과 구분하기 위함 예를 들면 login
-          path: '/:username(@.+)',
+          path: '/:userId(@.+)',
           name: 'user',
           component: UserView
         },
@@ -27,7 +27,7 @@ const router = createRouter({
           component: VideoUploadView
         },
         {
-          path: '/:username/video/:videoId',
+          path: '/:userId(@.+)/video/:videoId',
           name: 'videoDetail',
           component: VideoView
         }
