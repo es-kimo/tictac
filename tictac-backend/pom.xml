@@ -61,6 +61,12 @@
 			<artifactId>jjwt</artifactId>
 			<version>0.9.1</version>
 		</dependency>
+		<!-- 썸네일 추출용 -->
+		<dependency>
+		    <groupId>org.bytedeco</groupId>
+		    <artifactId>javacv</artifactId>
+		    <version>1.5.9</version>
+		</dependency>
 	</dependencies>
 
 	<build>
