@@ -1,7 +1,7 @@
 <template>
   <article class="wrapper">
     <h2 class="tit-login">TicTac에 로그인</h2>
-    <form action="" class="form-login">
+    <form action="" class="form-login" @submit.prevent="handleLoginButton">
       <label for="id">아이디</label>
       <input type="text" id="id" v-model="id" />
       <label for="password">패스워드</label>
@@ -14,10 +14,21 @@
 
 <script setup lang="ts">
 import { computed, ref, type Ref } from 'vue';
+import { useUserStore } from '@/stores/user';
+import { useRouter } from 'vue-router';
+
+const router = useRouter();
+
 const id: Ref<string> = ref('');
 const password: Ref<string> = ref('');
-
 const isFormFilled = computed(() => id.value.length > 0 && password.value.length > 0);
+
+const userStore = useUserStore();
+
+const handleLoginButton = () => {
+  userStore.login(id.value, password.value);
+  router.push({ name: 'home' }); // home으로 가게하는게 맞을까??
+};
 </script>
 
 <style scoped>
