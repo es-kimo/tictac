@@ -10,7 +10,10 @@ export const useUserStore = defineStore('user', () => {
   const loginEmail = ref('');
   const login = function (id: string, pw: string) {
     axios
-      .post(`${REST_VIDEO_API}/login`, { id, pw })
+      .post(`${REST_VIDEO_API}/login`, {
+        userId: id,
+        password: pw
+      })
       .then((response: any) => {
         console.log(response);
 
@@ -20,9 +23,12 @@ export const useUserStore = defineStore('user', () => {
         let id = token[1]; // 3개 중에 payload 고름
         id = atob(id);
         id = JSON.parse(id);
-        console.log(id['userId']);
+        // console.log(id);
+        // console.log(id['userId']);
+        // console.log(id['username']);
+        // console.log(id['email']);
         loginUserId.value = id['userId'];
-        loginUsername.value = id['userName'];
+        loginUsername.value = id['username'];
         loginEmail.value = id['email'];
       })
       .catch((err: Error) => {
