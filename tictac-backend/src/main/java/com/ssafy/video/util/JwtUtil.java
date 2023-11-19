@@ -1,6 +1,8 @@
 package com.ssafy.video.util;
 
 import java.io.UnsupportedEncodingException;
+import java.util.Arrays;
+import java.util.Base64;
 
 import org.springframework.stereotype.Component;
 
@@ -18,11 +20,13 @@ public class JwtUtil {
 	
 	// 토큰 생성 메서드
 	public String createToken(String value1, String value2, String value3) throws UnsupportedEncodingException {
+//		System.out.println( Arrays.toString((value2.getBytes("UTF-8"))));
 		return Jwts.builder()
 				.setHeaderParam("alg", "HS256")
 				.setHeaderParam("typ", "JWT")
 				.claim("userId", value1)
 				.claim("username", value2)
+//				.claim("username", value2.getBytes("UTF-8"))
 				.claim("email", value3)
 				.signWith(SignatureAlgorithm.HS256, SALT.getBytes("utf-8"))
 				.compact();
