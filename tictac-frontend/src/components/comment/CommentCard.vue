@@ -8,8 +8,7 @@
         <ul class="regDate">
           <li>{{ comment.regDate }}</li>
           <button>회신</button>
-          <button @click="handleUpdateCommentButton" v-if="isSameUser">수정</button>
-          <button @click="handleDeleteCommentButton">삭제</button>
+          <button @click="handleDeleteCommentButton" v-if="isSameUser">삭제</button>
         </ul>
       </li>
     </ul>
@@ -18,8 +17,9 @@
 
 <script setup>
 import { useCommentStore } from '@/stores/comment';
-import { useRoute } from 'vue-router';
+import { useRoute, useRouter } from 'vue-router';
 
+const router = useRouter();
 const route = useRoute();
 const commentStore = useCommentStore();
 
@@ -27,19 +27,35 @@ const props = defineProps({
   comment: Object
 });
 
-const getLoginUser = () => {
+
+function b64DecodeUnicode(str) {
+  return decodeURIComponent(
+    Array.prototype.map
+      .call(atob(str), function (c) {
+        return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+      })
+      .join('')
+  );
+}
+
+const isSameUser = () => {
   const token = sessionStorage.getItem('access-token').split('.');
-  let id = token[1]; // 3개 중에 payload 고름
-  id = atob(id);
-  id = JSON.parse(id);
-  comment.value.commentId = id['userId'];
-  comment.value.username = id['username'];
+  let loginInfo = token[1]; // 3개 중에 payload 고름
+  loginInfo = b64DecodeUnicode(loginInfo);
+  console.log(loginInfo);
+  loginInfo = JSON.parse(loginInfo);
+
+  // comment.value.userId = loginInfo['userId'];
+  // comment.value.username = loginInfo['username'];
+  return props.comment.username === loginInfo['username']; // userId로 바꾸기
 };
 
-const isSameUser = props.comment.username === props.comment.username;
+// const isSameUser = props.comment.username === props.comment.username;
 
-const handleUpdateCommentButton = () => {
-  commentStore.updateComment(route.params.videoId, comment.value);
+const handleDeleteCommentButton = async () => {
+  console.log(isSameUser());
+  await commentStore.deleteComment(route.params.videoId, props.comment.commentId);
+  router.go(0)
 };
 </script>
 
