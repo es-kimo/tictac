@@ -2,7 +2,11 @@ import { ref } from 'vue';
 import { defineStore } from 'pinia';
 import axios from 'axios';
 
-const REST_VIDEO_API = `http://localhost:8080`;
+import { useRouter } from 'vue-router';
+
+const router = useRouter();
+
+const REST_USER_API = `http://localhost:8080`;
 
 export const useUserStore = defineStore('user', () => {
   const loginUserId = ref('');
@@ -20,7 +24,7 @@ export const useUserStore = defineStore('user', () => {
 
   const login = function (id: string, pw: string) {
     axios
-      .post(`${REST_VIDEO_API}/login`, {
+      .post(`${REST_USER_API}/login`, {
         userId: id,
         password: pw
       })
@@ -41,6 +45,7 @@ export const useUserStore = defineStore('user', () => {
         loginUsername.value = id['username'];
         // loginUsername.value = new TextDecoder().decode(base64ToArrayBuffer(id['username']));
         loginEmail.value = id['email'];
+        console.log(id['username']);
         // console.log(base64ToArrayBuffer(id['username']));
         // console.log(loginUsername.value)
       })
