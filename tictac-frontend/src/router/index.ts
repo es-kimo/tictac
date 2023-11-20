@@ -1,4 +1,4 @@
-import { ref } from "vue";
+import { ref } from 'vue';
 import { createRouter, createWebHistory } from 'vue-router';
 
 import HomeView from '@/views/HomeView.vue';
@@ -11,7 +11,7 @@ const isLogin = ref(sessionStorage.getItem('access-token') == null);
 
 const checkLogin = () => {
   isLogin.value = sessionStorage.getItem('access-token') == null;
-}
+};
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -33,10 +33,10 @@ const router = createRouter({
           name: 'upload',
           component: VideoUploadView,
           beforeEnter: (to, from) => {
-            checkLogin
+            checkLogin();
             if (isLogin.value) {
-              console.log('로그인 안 된 상태임')
-              return { name: 'login'}
+              console.log('로그인 안 된 상태임');
+              return { name: 'login' };
             }
           }
         },

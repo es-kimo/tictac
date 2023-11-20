@@ -70,9 +70,9 @@ public class VideoServiceImpl implements VideoService {
 	}
 
 	@Override
-	public int uploadVideo(Video video, MultipartFile file) {
+	public int uploadVideo(Video video, MultipartFile file, MultipartFile thumbnail) {
 		try {
-			fileHandling(video, file);
+			fileHandling(video, file, thumbnail);
 		} catch (IOException e) {
 			e.printStackTrace();
 			//위에서 실패할 시 0을 리턴하면 될 것인가?
@@ -91,7 +91,7 @@ public class VideoServiceImpl implements VideoService {
 		return videoDao.deleteVideo(videoId);
 	}
 
-	private void fileHandling(Video video, MultipartFile file) throws IOException {
+	private void fileHandling(Video video, MultipartFile file, MultipartFile thumbnail) throws IOException {
 		Resource res = resLoader.getResource("resources/upload");
 		logger.debug("res: {}", res.getFile().getCanonicalPath());
 		if (file != null && file.getSize()>0) {
@@ -101,25 +101,28 @@ public class VideoServiceImpl implements VideoService {
 			file.transferTo(new File(res.getFile().getCanonicalPath() + "/" + video.getVideoSrc()));
 			
 			//2. 썸네일 저장
+			video.setThumbnailImgSrc(System.currentTimeMillis() + "_" + video.getOrgVideoSrc() + ".png");
+			thumbnail.transferTo(new File(res.getFile().getCanonicalPath() + "/" + video.getThumbnailImgSrc()));
+			
 			//https://stackoverflow.com/questions/37163978/how-to-get-a-thumbnail-of-an-uploaded-video-file
-			FFmpegFrameGrabber frameGrabber = new FFmpegFrameGrabber(res.getFile().getCanonicalPath() + "/" + video.getVideoSrc());
-			frameGrabber.start();
-			Java2DFrameConverter aa = new Java2DFrameConverter();
-			try {
-			    BufferedImage bi;
-			    Frame f = frameGrabber.grabKeyFrame();
-			    bi = aa.convert(f);
-			    
-			    while (bi!=null) {
-			    	video.setThumbnailImgSrc(System.currentTimeMillis() + "_" + video.getOrgVideoSrc() + ".png");
-			        ImageIO.write(bi, "png", new File(res.getFile().getCanonicalPath() + "/" + video.getThumbnailImgSrc()));
-			        f = frameGrabber.grabKeyFrame();
-			        bi = aa.convert(f);
-			    }
-			    frameGrabber.stop();
-			} catch (Exception e) {
-			    e.printStackTrace();
-			}
+//			FFmpegFrameGrabber frameGrabber = new FFmpegFrameGrabber(res.getFile().getCanonicalPath() + "/" + video.getVideoSrc());
+//			frameGrabber.start();
+//			Java2DFrameConverter aa = new Java2DFrameConverter();
+//			try {
+//			    BufferedImage bi;
+//			    Frame f = frameGrabber.grabKeyFrame();
+//			    bi = aa.convert(f);
+//			    
+//			    while (bi!=null) {
+//			    	video.setThumbnailImgSrc(System.currentTimeMillis() + "_" + video.getOrgVideoSrc() + ".png");
+//			        ImageIO.write(bi, "png", new File(res.getFile().getCanonicalPath() + "/" + video.getThumbnailImgSrc()));
+//			        f = frameGrabber.grabKeyFrame();
+//			        bi = aa.convert(f);
+//			    }
+//			    frameGrabber.stop();
+//			} catch (Exception e) {
+//			    e.printStackTrace();
+//			}
 		}
 	}
 
