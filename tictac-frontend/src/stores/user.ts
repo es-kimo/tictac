@@ -4,6 +4,16 @@ import axios from 'axios';
 
 const REST_VIDEO_API = `http://localhost:8080`;
 
+function b64DecodeUnicode(str: string) {
+  return decodeURIComponent(
+    Array.prototype.map
+      .call(atob(str), function (c) {
+        return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+      })
+      .join('')
+  );
+}
+
 export const useUserStore = defineStore('user', () => {
   const loginUserId = ref('');
   const loginUsername = ref('');
@@ -18,36 +28,41 @@ export const useUserStore = defineStore('user', () => {
   //   return bytes.buffer;
   // }
 
+  // https://stackoverflow.com/questions/55700815/async-await-with-vuex-dispatch
   const login = function (id: string, pw: string) {
-    axios
+    return axios
       .post(`${REST_VIDEO_API}/login`, {
         userId: id,
         password: pw
       })
       .then((response: any) => {
-        console.log(response);
-
         sessionStorage.setItem('access-token', response.data['access-token']);
 
         const token = response.data['access-token'].split('.');
-        let id = token[1]; // 3개 중에 payload 고름
-        id = atob(id);
-        id = JSON.parse(id);
-        // console.log(id);
-        console.log(id['userId']);
-        console.log(id['username']);
-        console.log(id['email']);
-        loginUserId.value = id['userId'];
-        loginUsername.value = id['username'];
+        let loginInfo = token[1]; // 3개 중에 payload 고름
+        loginInfo = b64DecodeUnicode(loginInfo);
+        console.log(loginInfo);
+        loginInfo = JSON.parse(loginInfo);
+
+        loginUserId.value = loginInfo['userId'];
+        loginUsername.value = loginInfo['username'];
+        loginEmail.value = loginInfo['email'];
+
+        console.log(loginInfo['userId']);
+        console.log(loginInfo['username']);
         // loginUsername.value = new TextDecoder().decode(base64ToArrayBuffer(id['username']));
-        loginEmail.value = id['email'];
-        // console.log(base64ToArrayBuffer(id['username']));
-        // console.log(loginUsername.value)
       })
       .catch((err: Error) => {
         console.log(err);
       });
   };
 
-  return { login, loginUserId, loginUsername, loginEmail };
+  const logout = () => {
+    sessionStorage.removeItem('access-token');
+    loginUserId.value = '';
+    loginUsername.value = '';
+    loginEmail.value = '';
+  };
+
+  return { login, logout, loginUserId, loginUsername, loginEmail };
 });

@@ -25,9 +25,9 @@ const isFormFilled = computed(() => id.value.length > 0 && password.value.length
 
 const userStore = useUserStore();
 
-const handleLoginButton = () => {
-  userStore.login(id.value, password.value);
-  router.push({ name: 'home' }); // home으로 가게하는게 맞을까??
+const handleLoginButton = async () => {
+  await userStore.login(id.value, password.value);
+  router.push({ name: 'home' });
 };
 </script>
 
