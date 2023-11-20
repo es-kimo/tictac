@@ -3,6 +3,21 @@ import { defineStore } from 'pinia';
 import router from '@/router';
 import axios from 'axios';
 
+export interface Video {
+  videoId: number;
+  userId: string;
+  content: string;
+  videoSrc: string;
+  orgVideoSrc: string;
+  regDate: Date;
+  heartCnt: number;
+  bookmarkCnt: number;
+  viewCnt: number;
+  thumbnailImgSrc: string;
+  orgThumbnailImgSrc: string;
+  categoryId: string;
+}
+
 const REST_VIDEO_API = `http://localhost:8080`;
 
 export const useVideoStore = defineStore('video', () => {
@@ -52,30 +67,18 @@ export const useVideoStore = defineStore('video', () => {
   };
 
   // 영상 등록
-  const uploadVideo = function (video: any) {
-    console.log(video.videoId);
-    console.log(video.userId);
-    axios({
-      url: REST_VIDEO_API + '/video',
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'access-token': sessionStorage.getItem('access-token')
-      },
-      params: {
-        videoId: video.videoId,
-        // session 잘 연결되면 userId를 access-token에서 가져오면 될듯
-        userId: video.userId,
-        content: video.content,
-        videoSrc: video.videoSrc,
-        regDate: video.regDate,
-        thumbnailImgSrc: video.thumbnailImgSrc,
-        categoryId: video.categoryId
-      }
-    })
-      .then(() => {
-        console.log(video.videoId);
-        console.log(video.userId);
+  const uploadVideo = function (formData: any) {
+    // console.log(video.videoId);
+    // console.log(video.userId);
+    axios
+      .post(REST_VIDEO_API + '/video', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+          'access-token': sessionStorage.getItem('access-token')
+        }
+      })
+      .then((res) => {
+        console.log(res);
         router.push({
           name: 'login'
           //   params: { username: video.userId, videoId: video.videoId }

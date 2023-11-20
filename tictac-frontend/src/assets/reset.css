@@ -133,7 +133,8 @@ svg {
   vertical-align: top;
 }
 input,
-button {
+button,
+textarea {
   all: unset;
 }
 button {

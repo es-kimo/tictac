@@ -100,8 +100,8 @@ public class VideoController {
 	
 	// 영상 업로드
 	@PostMapping("/video")
-	private ResponseEntity<Video> upload(Video video, @RequestPart MultipartFile file) {
-		videoService.uploadVideo(video, file);
+	private ResponseEntity<Video> upload(Video video, @RequestPart MultipartFile file, @RequestPart MultipartFile thumbnail) {
+		videoService.uploadVideo(video, file, thumbnail);
 		return new ResponseEntity<Video>(video, HttpStatus.OK);
 	}
 	

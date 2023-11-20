@@ -20,7 +20,7 @@ public interface VideoService {
 	
 	Video getVideoDetail(int videoId);
 
-	int uploadVideo(Video video, MultipartFile file);
+	int uploadVideo(Video video, MultipartFile file, MultipartFile thumbnail);
 
 	int modifyVideo(Video video);
 
