@@ -11,8 +11,8 @@
 	</select>
 
 	<insert id="insertComment">
-		INSERT INTO Comment (Video_videoId, commentId, User_username, content, regDate)
-		VALUES (#{videoId}, #{comment.commentId}, #{comment.username}, #{comment.content}, now())
+		INSERT INTO Comment (Video_videoId, User_username, content, regDate)
+		VALUES (#{videoId}, #{comment.username}, #{comment.content}, now())
 	</insert>
 
 	<update id="updateComment">

@@ -2,7 +2,11 @@ import { ref } from 'vue';
 import { defineStore } from 'pinia';
 import axios from 'axios';
 
-const REST_VIDEO_API = `http://localhost:8080`;
+import { useRouter } from 'vue-router';
+
+const router = useRouter();
+
+const REST_USER_API = `http://localhost:8080`;
 
 function b64DecodeUnicode(str: string) {
   return decodeURIComponent(
@@ -30,8 +34,9 @@ export const useUserStore = defineStore('user', () => {
 
   // https://stackoverflow.com/questions/55700815/async-await-with-vuex-dispatch
   const login = function (id: string, pw: string) {
+
     return axios
-      .post(`${REST_VIDEO_API}/login`, {
+      .post(`${REST_USER_API}/login`, {
         userId: id,
         password: pw
       })
@@ -47,10 +52,6 @@ export const useUserStore = defineStore('user', () => {
         loginUserId.value = loginInfo['userId'];
         loginUsername.value = loginInfo['username'];
         loginEmail.value = loginInfo['email'];
-
-        console.log(loginInfo['userId']);
-        console.log(loginInfo['username']);
-        // loginUsername.value = new TextDecoder().decode(base64ToArrayBuffer(id['username']));
       })
       .catch((err: Error) => {
         console.log(err);

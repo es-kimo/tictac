@@ -21,6 +21,10 @@ public class JwtInterceptor implements HandlerInterceptor {
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
 			throws Exception {
 		
+		// 이거 안쓰면 CORS 에러
+		if (request.getMethod().contentEquals("OPTIONS"))
+			return true;
+		
 		// HTTP 요청 헤더에 "access-token" 이름으로 할당된 값 리턴
 		String token = request.getHeader(HEADER_AUTH);
 		
