@@ -9,7 +9,8 @@
         </IconBase>
         업로드
       </RouterLink>
-      <RouterLink to="/login" class="btn-login"> 로그인 </RouterLink>
+      <RouterLink to="/login" class="btn-login" v-if="isLogin"> 로그인 </RouterLink>
+      <a v-else @click.prevent="logout">로그아웃</a>
       <RouterLink to="/@ryurlah">
         <img class="img-profile" src="@/assets/sample/excitedinseun.png" alt="" />
       </RouterLink>
@@ -18,11 +19,32 @@
 </template>
 
 <script setup lang="ts">
+import { onMounted, ref } from "vue";
 import { RouterLink } from 'vue-router';
 
 import SearchBar from './SearchBar.vue';
 import IconBase from '../icon/IconBase.vue';
 import IconPlus from '../icon/IconPlus.vue';
+import router from "@/router";
+
+const isLogin = ref(sessionStorage.getItem('access-token') == null);
+
+const checkLogin = () => {
+  isLogin.value = sessionStorage.getItem('access-token') == null;
+}
+
+const logout = () => {
+  sessionStorage.removeItem('access-token')
+  alert('로그아웃됨')
+  router.go(0) // 새로고침
+}
+
+onMounted(() => {
+  checkLogin
+  console.log("온마운트")
+  console.log(isLogin.value)
+  console.log(sessionStorage.getItem('access-token') )
+})
 </script>
 
 <style scoped>
