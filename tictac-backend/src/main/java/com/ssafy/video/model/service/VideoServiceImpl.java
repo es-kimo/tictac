@@ -92,7 +92,14 @@ public class VideoServiceImpl implements VideoService {
 	}
 
 	private void fileHandling(Video video, MultipartFile file, MultipartFile thumbnail) throws IOException {
-		Resource res = resLoader.getResource("resources/upload");
+		Resource res = resLoader.getResource("static/upload");
+		File folder = new File(res.getFile().getCanonicalPath());
+		if (!folder.exists()) {
+			if (folder.mkdirs()) {;
+				System.out.println("folder created");
+			}
+		}
+		
 		logger.debug("res: {}", res.getFile().getCanonicalPath());
 		if (file != null && file.getSize()>0) {
 			//1. 비디오 저장
@@ -101,7 +108,8 @@ public class VideoServiceImpl implements VideoService {
 			file.transferTo(new File(res.getFile().getCanonicalPath() + "/" + video.getVideoSrc()));
 			
 			//2. 썸네일 저장
-			video.setThumbnailImgSrc(System.currentTimeMillis() + "_" + video.getOrgVideoSrc() + ".png");
+			int idx = video.getVideoSrc().lastIndexOf(".");
+			video.setThumbnailImgSrc(video.getVideoSrc().substring(0, idx) + ".png");
 			thumbnail.transferTo(new File(res.getFile().getCanonicalPath() + "/" + video.getThumbnailImgSrc()));
 			
 			//https://stackoverflow.com/questions/37163978/how-to-get-a-thumbnail-of-an-uploaded-video-file

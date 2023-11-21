@@ -140,3 +140,7 @@ textarea {
 button {
   cursor: pointer;
 }
+select {
+  font-size: inherit;
+  font-family: inherit;
+}

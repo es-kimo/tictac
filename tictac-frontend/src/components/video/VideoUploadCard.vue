@@ -26,7 +26,16 @@
     </article>
     <!-- after drop -->
     <form v-else class="cont-after" method="POST" @submit.prevent="handleSubmit">
-      <!-- <input accept="video/mp4" name="file" id="file" type="file" style="display: none" /> -->
+      <label for="category">카테고리</label>
+      <div class="cont-category">
+        <select ref="categoryElem" name="category" id="category">
+          <option value="파쿠르">파쿠르</option>
+          <option value="스케이트보드">스케이트보드</option>
+          <option value="카포에라">카포에라</option>
+          <option value="광선검">광선검</option>
+          <option value="독 어질리티">독 어질리티</option>
+        </select>
+      </div>
       <div class="tit-content">
         <label for="content">내용</label><span>{{ wordCnt }} / {{ wordLimit }}</span>
       </div>
@@ -41,10 +50,9 @@
         ></textarea>
       </div>
       <label for="thumbnail" @click.prevent="">커버</label>
-      <!-- <input type="file" name="thumbnail" id="thumbnail" /> -->
       <video
         preload="auto"
-        @loadedmetadata="onLoaded"
+        @loadedmetadata="onLoadedMetadata"
         src=""
         ref="videoElem"
         style="display: none"
@@ -79,15 +87,13 @@
 <script setup lang="ts">
 import { ref, type Ref, nextTick } from 'vue';
 import { useVideoStore } from '@/stores/video';
-import { useUserStore } from '@/stores/user';
 
 import IconBase from '../icon/IconBase.vue';
 import IconVideo from '@/components/icon/IconVideo.vue';
 
-// stores
-const userStore = useUserStore();
-
 const inputElem: Ref<null | HTMLInputElement> = ref(null);
+const categoryElem: Ref<null | HTMLSelectElement> = ref(null);
+
 const handleUploadButton = () => {
   inputElem.value!.click();
 };
@@ -134,11 +140,12 @@ const fileHandler = async (file: File) => {
   // change view
   isBeforeDrop.value = false;
   uploadedFile = file;
-  // wait
+  // wait, because of v-if
   await nextTick();
-  const videourl = URL.createObjectURL(file);
+  const videourl = URL.createObjectURL(uploadedFile);
   videoElem.value!.src = videourl;
   chosenVideoElem.value!.src = videourl;
+
   // choose bar 옮기기
   let active = false;
   let currentX: number;
@@ -184,6 +191,8 @@ const fileHandler = async (file: File) => {
       xOffset = currentX;
       setTranslate(currentX, chooseElem.value);
       const duration = videoElem.value!.duration;
+
+      // 유저가 설정한 시간대로 변경
       chosenVideoElem.value!.currentTime = duration * (currentX / 576);
     }
   }
@@ -193,7 +202,12 @@ const fileHandler = async (file: File) => {
   }
 };
 
-const onLoaded = () => {
+const onLoadedMetadata = () => {
+  // 캡처할 캔버스의 크기 동적으로 주입
+  // console.log(videoElem.value!.videoWidth);
+  // console.log(videoElem.value!.videoHeight);
+  canvasElem.value!.width = videoElem.value!.videoWidth;
+  canvasElem.value!.height = videoElem.value!.videoHeight;
   const duration = videoElem.value!.duration;
   const term = duration / 7;
 
@@ -222,8 +236,10 @@ const handleSubmit = async (e: Event) => {
 
   const formData = new FormData(target);
   // userId
-  console.log(userStore.loginUserId);
-  formData.append('userId', userStore.loginUserId);
+  formData.append('userId', sessionStorage.getItem('userId')!);
+  // category
+  console.log(categoryElem.value!.value);
+  formData.append('categoryId', categoryElem.value!.value);
   // video
   if (uploadedFile) {
     formData.append('file', uploadedFile);
@@ -232,15 +248,21 @@ const handleSubmit = async (e: Event) => {
   canvasElem
     .value!.getContext('2d')!
     .drawImage(videoElem.value!, 0, 0, canvasElem.value!.width, canvasElem.value!.height);
-  canvasElem.value!.toBlob((blob: any) => {
-    formData.append('thumbnail', blob);
-  });
+  const blob: Blob = await new Promise((resolve) =>
+    canvasElem.value!.toBlob((blob: any) => resolve(blob))
+  );
+  /* equals to
+  const blob: Blob = await new Promise((resolve: any) =>
+    canvasElem.value!.toBlob(resolve)
+  );
+  */
+  formData.append('file', blob, 'thumbnail');
 
+  // 통신
   try {
-    const response = videoStore.uploadVideo(formData);
-    alert('성공');
+    videoStore.uploadVideo(formData);
   } catch (error) {
-    alert('돌아가');
+    alert('업로드 실패');
     console.log(error);
   }
 };
@@ -306,13 +328,25 @@ span {
   gap: 20px;
 }
 
+.cont-category select {
+  padding: 12px;
+  border: 1px solid var(--vt-c-text-dark-2);
+  border-radius: 4px;
+}
+
+.cont-category select:focus {
+  box-shadow: 0 0 3pt 2pt hsla(160, 100%, 37%, 0.2);
+  border: none;
+  outline: none;
+}
+
 .tit-content {
   display: flex;
   justify-content: space-between;
 }
 
 .cont-textarea {
-  padding: 12px 12px;
+  padding: 12px;
   border: 1px solid var(--vt-c-text-dark-2);
   border-radius: 4px;
 }
