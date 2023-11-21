@@ -10,7 +10,7 @@
         {{ user.id }}
       </RouterLink>
       <RouterLink :to="'/@' + user.id" class="link-username">
-        {{ user.username }}
+        {{ user.username.value }}
       </RouterLink>
       <RouterLink :to="'/@' + user.id" class="btn-edit"> 프로필 편집 </RouterLink>
     </div>

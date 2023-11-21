@@ -81,8 +81,7 @@ export const useVideoStore = defineStore('video', () => {
       .then((res) => {
         console.log(res);
         router.push({
-          name: 'login'
-          //   params: { username: video.userId, videoId: video.videoId }
+          name: 'home'
         });
       })
       .catch((err: Error) => {
