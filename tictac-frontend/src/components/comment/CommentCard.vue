@@ -1,14 +1,18 @@
 <template>
   <div class="wrapper">
-    <img class="img-profile" src="@/assets/sample/excitedinseun.png" />
+    <RouterLink :to="'/@' + comment.userId">
+      <img class="img-profile" src="@/assets/sample/excitedinseun.png" />
+    </RouterLink>
     <ul class="cont-info">
-      <li class="username">{{ comment.username }}</li>
+      <RouterLink :to="'/@' + comment.userId">
+        <li class="username">{{ comment.username }}</li>
+      </RouterLink>
       <li>{{ comment.content }}</li>
       <li>
         <ul class="regDate">
           <li>{{ comment.regDate }}</li>
           <button>회신</button>
-          <button @click="handleDeleteCommentButton" v-if="isSameUser">삭제</button>
+          <button @click="handleDeleteCommentButton" v-if="isSameUser()">삭제</button>
         </ul>
       </li>
     </ul>
@@ -27,7 +31,6 @@ const props = defineProps({
   comment: Object
 });
 
-
 function b64DecodeUnicode(str) {
   return decodeURIComponent(
     Array.prototype.map
@@ -42,20 +45,16 @@ const isSameUser = () => {
   const token = sessionStorage.getItem('access-token').split('.');
   let loginInfo = token[1]; // 3개 중에 payload 고름
   loginInfo = b64DecodeUnicode(loginInfo);
-  console.log(loginInfo);
+  // console.log(loginInfo);
   loginInfo = JSON.parse(loginInfo);
 
-  // comment.value.userId = loginInfo['userId'];
-  // comment.value.username = loginInfo['username'];
-  return props.comment.username === loginInfo['username']; // userId로 바꾸기
+  return props.comment.userId === loginInfo['userId'];
 };
-
-// const isSameUser = props.comment.username === props.comment.username;
 
 const handleDeleteCommentButton = async () => {
   console.log(isSameUser());
   await commentStore.deleteComment(route.params.videoId, props.comment.commentId);
-  router.go(0)
+  router.go(0);
 };
 </script>
 

@@ -26,7 +26,7 @@ export const useVideoStore = defineStore('video', () => {
   const videoList = ref([]);
 
   const getWholeVideoList = function () {
-    axios.get(REST_VIDEO_API + '/videoList').then((response: any) => {
+    return axios.get(REST_VIDEO_API + '/videoList').then((response: any) => {
       videoList.value = response.data;
     });
   };
@@ -37,20 +37,21 @@ export const useVideoStore = defineStore('video', () => {
     });
   };
 
-  const getCategoryList = function (categoryId: String) {
+  const getCategoryList = function (categoryId: any) {
     axios.get(REST_VIDEO_API + `/videoList/${categoryId}`).then((response: any) => {
       videoList.value = response.data;
     });
   };
 
-  const getUploadList = function (userId: String) {
-    axios.get(REST_VIDEO_API + `uploadList/${userId}`).then((response: any) => {
+  const getUploadList = function (userId: any) {
+    return axios.get(REST_VIDEO_API + `/uploadList/${userId}`).then((response: any) => {
       videoList.value = response.data;
+      console.log(videoList.value);
     });
   };
 
-  const getMyBookmarkList = function (userId: String) {
-    axios.get(REST_VIDEO_API + `myBookmarkList/${userId}`).then((response: any) => {
+  const getMyBookmarkList = function (userId: any) {
+    return axios.get(REST_VIDEO_API + `/myBookmarkList/${userId}`).then((response: any) => {
       videoList.value = response.data;
     });
   };
@@ -89,10 +90,21 @@ export const useVideoStore = defineStore('video', () => {
       });
   };
 
-  // 영상 수정 (미완)
-  //   const updateVideo = function (video)
+  // 영상 수정
+  const updateVideo = function (video: any) {
+    return axios.put(REST_VIDEO_API + '/video', video).then(() => {
+      // 메서드 부른 곳에서 router.go(0)해야함
+    });
+  };
 
-  // 영상 삭제 (미완)
+  // 영상 삭제
+  const deleteVideo = function (videoId: any) {
+    return axios.delete(REST_VIDEO_API + `/video/`, {
+      data: {
+        videoId: videoId
+      }
+    });
+  };
 
   return {
     videoList,
@@ -102,6 +114,8 @@ export const useVideoStore = defineStore('video', () => {
     getUploadList,
     getMyBookmarkList,
     getVideo,
-    uploadVideo
+    uploadVideo,
+    updateVideo,
+    deleteVideo
   };
 });

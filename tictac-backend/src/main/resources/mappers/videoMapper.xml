@@ -30,8 +30,10 @@
 
 	<select id="selectMyBookmarkList" parameterType="String" resultType="Video">
 		SELECT videoId, User_userId as userId, content, videoSrc, regDate, heartCnt, viewCnt, thumbnailImgSrc, categoryId
-		FROM MyBookmarkList
-		WHERE User_userId = #{userId}
+		FROM Video
+		WHERE videoId in ( SELECT DISTINCT Video_videoId
+		FROM MyBookmarkList 
+		WHERE User_userId = #{userId})
 	</select>
 	
 	

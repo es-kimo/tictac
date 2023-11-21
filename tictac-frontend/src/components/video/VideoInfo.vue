@@ -8,10 +8,10 @@
 <script setup lang="ts">
 import SmallProfile from '../Profile/SmallProfile.vue';
 
-defineProps(['content', 'user']);
+const props = defineProps(['content', 'user', 'content', 'username']);
 const user = {
   // user dto
-  username: 'Inseung Hwang',
+  username: props.username,
   id: ''
 };
 </script>

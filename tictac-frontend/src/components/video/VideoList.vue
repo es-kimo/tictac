@@ -1,28 +1,9 @@
 <template>
   <ul>
     <li>
-      <VideoCard @video-hover="handleHover">
+      <VideoCard @video-hover="handleHover" v-for="video in videoList">
         <template v-slot:outer>
-          <VideoInfo
-            content="내용입니다내용입니다내용입니다내용입니다내용입니다내용입니다내용입니다내용입니다내용입니다내용입니다"
-            username="Inseung Hwang"
-          />
-        </template>
-      </VideoCard>
-      <VideoCard @video-hover="handleHover">
-        <template v-slot:outer>
-          <VideoInfo
-            content="내용입니다내용입니다내용입니다내용입니다내용입니다내용입니다내용입니다내용입니다내용입니다내용입니다"
-            username="Inseung Hwang"
-          />
-        </template>
-      </VideoCard>
-      <VideoCard @video-hover="handleHover">
-        <template v-slot:outer>
-          <VideoInfo
-            content="내용입니다내용입니다내용입니다내용입니다내용입니다내용입니다내용입니다내용입니다내용입니다내용입니다"
-            username="Inseung Hwang"
-          />
+          <VideoInfo :content="video.content" :username="video.userId" />
         </template>
       </VideoCard>
     </li>
@@ -32,7 +13,10 @@
 <script setup lang="ts">
 import VideoCard from './VideoCard.vue';
 import VideoInfo from './VideoInfo.vue';
-import type { Ref } from 'vue';
+import { onMounted, ref, type Ref } from 'vue';
+import { useVideoStore } from '@/stores/video';
+
+const videoStore = useVideoStore();
 
 const queue: Ref<boolean>[] = [];
 const handleHover = (showVideoRef: Ref<boolean>) => {
@@ -45,6 +29,18 @@ const handleHover = (showVideoRef: Ref<boolean>) => {
     }
   }
 };
+
+const getWholeVideoList = async () => {
+  await videoStore.getWholeVideoList();
+  videoList.value = videoStore.videoList;
+};
+
+const videoList: ref([]);
+
+onMounted(() => {
+  getWholeVideoList();
+  console.log(videoList);
+});
 </script>
 
 <style scoped></style>

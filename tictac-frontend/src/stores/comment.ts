@@ -6,7 +6,6 @@ import router from '@/router';
 const REST_COMMENT_API = `http://localhost:8080`;
 
 export const useCommentStore = defineStore('user', () => {
-
   const commentList = ref([]);
   const getCommentList = function (videoId: any) {
     axios.get(REST_COMMENT_API + `/video/${videoId}/comment`).then((response: any) => {
@@ -14,7 +13,7 @@ export const useCommentStore = defineStore('user', () => {
       // console.log(response.data);
     });
   };
-  
+
   const uploadComment = function (videoId: Number, comment: any) {
     console.log(comment.username);
     return axios({
@@ -26,7 +25,8 @@ export const useCommentStore = defineStore('user', () => {
         'access-token': sessionStorage.getItem('access-token')
       },
       data: {
-        username: '김싸피', // 바꿔야함 - 원래있는 username이 꼭 들어와야함
+        userId: comment.userId,
+        username: comment.username,
         content: comment.content
       }
     })
@@ -49,14 +49,11 @@ export const useCommentStore = defineStore('user', () => {
     //           commentId: commentId
     //         }
     //       });
-    return axios
-      .delete(
-        REST_COMMENT_API + `/video/${videoId}/comment`,
-        {
-          params: {
-          commentId: commentId
-        },
-      });
+    return axios.delete(REST_COMMENT_API + `/video/${videoId}/comment`, {
+      params: {
+        commentId: commentId
+      }
+    });
   };
 
   return { commentList, getCommentList, uploadComment, deleteComment };

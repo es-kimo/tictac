@@ -114,7 +114,7 @@ public class VideoController {
 	
 	// 영상 삭제
 	@DeleteMapping("/video")
-	private ResponseEntity<Void> delete(int videoId) {
+	private ResponseEntity<Void> delete(Integer videoId) {
 		videoService.removeVideo(videoId);
 		return new ResponseEntity<Void>(HttpStatus.OK);
 	}

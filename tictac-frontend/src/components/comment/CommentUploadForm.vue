@@ -2,7 +2,13 @@
   <div>
     <form action="" @submit.prevent="handleUploadCommentButton">
       <!-- <label for="content"></label> -->
-      <input type="text" id="content" name="content" placeholder="댓글을 입력하세요.." v-model="comment.content" />
+      <input
+        type="text"
+        id="content"
+        name="content"
+        placeholder="댓글을 입력하세요.."
+        v-model="comment.content"
+      />
       <button type="submit" class="btn-uploadComment" :disabled="!isFormFilled">등록</button>
     </form>
   </div>
@@ -20,7 +26,6 @@ const commentStore = useCommentStore();
 const route = useRoute();
 
 const isFormFilled = computed(() => comment.value.content.length > 0);
-
 
 function b64DecodeUnicode(str) {
   return decodeURIComponent(
@@ -48,7 +53,6 @@ const comment = ref({
   username: '',
   content: ''
 });
-
 
 const handleUploadCommentButton = async () => {
   getLoginUser();
