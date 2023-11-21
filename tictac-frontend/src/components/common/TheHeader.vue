@@ -1,6 +1,10 @@
 <template>
   <header class="app-header">
-    <h1 class="tit-header"><RouterLink to="/">TicTac</RouterLink></h1>
+    <h1 class="tit-header">
+      <RouterLink to="/">
+        <img src="@/assets/logo.png" alt="" />
+      </RouterLink>
+    </h1>
     <SearchBar></SearchBar>
     <div class="cont-nav">
       <RouterLink to="/upload" class="btn-upload">

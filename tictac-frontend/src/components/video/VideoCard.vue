@@ -5,7 +5,7 @@
         <picture>
           <img
             @mouseover="emitHover"
-            src="@/assets/sample/excitedinseun.png"
+            src="http://localhost:8080/thumbnail/1700546507369_noeul.png"
             alt="사진입니다."
             class="img"
           />
@@ -20,7 +20,7 @@
           loop
           class="video"
         >
-          <source src="@/assets/sample/noeul.mp4" />
+          <source src="http://localhost:8080/stream/1700546507369_noeul.mp4" />
         </video>
       </button>
 
@@ -103,6 +103,7 @@ const addHashToLocation = () => {
   position: absolute;
   bottom: 0;
   left: 0;
+  object-fit: cover;
 }
 
 .video {
