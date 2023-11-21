@@ -3,6 +3,14 @@ import { defineStore } from 'pinia';
 import axios from 'axios';
 import router from '@/router';
 
+export interface Comment {
+  commentId: number;
+  userId: string;
+  username: string;
+  content: string;
+  regDate: Date;
+}
+
 const REST_COMMENT_API = `http://localhost:8080`;
 
 export const useCommentStore = defineStore('user', () => {

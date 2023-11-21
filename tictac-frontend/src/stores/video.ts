@@ -1,4 +1,4 @@
-import { ref, computed } from 'vue';
+import { ref, computed, type Ref } from 'vue';
 import { defineStore } from 'pinia';
 import router from '@/router';
 import axios from 'axios';
@@ -23,7 +23,7 @@ const REST_VIDEO_API = `http://localhost:8080`;
 export const useVideoStore = defineStore('video', () => {
   // 1. 영상 리스트
 
-  const videoList = ref([]);
+  const videoList: Ref<Video[]> = ref([]);
 
   const getWholeVideoList = function () {
     return axios.get(REST_VIDEO_API + '/videoList').then((response: any) => {

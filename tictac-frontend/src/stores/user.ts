@@ -18,6 +18,13 @@ function b64DecodeUnicode(str: string) {
   );
 }
 
+export interface User {
+  userId: string;
+  password: string;
+  username: string;
+  email: string;
+}
+
 export const useUserStore = defineStore('user', () => {
   const loginUserId = ref('');
   const loginUsername = ref('');
