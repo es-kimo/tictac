@@ -1,10 +1,21 @@
 package com.ssafy.video.controller;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.List;
+import java.util.Map;
 
+import org.apache.tomcat.util.http.fileupload.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.ByteArrayResource;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.ResourceLoader;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.util.FileCopyUtils;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,6 +24,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestPart;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -25,7 +37,9 @@ import io.swagger.annotations.ApiParam;
 @RestController
 @CrossOrigin
 public class VideoController {
-
+	
+	@Autowired
+	ResourceLoader resLoader;
 	
 	@Autowired
 	VideoService videoService;
@@ -89,7 +103,6 @@ public class VideoController {
 	
 	// 2. 영상 1개
 	
-	
 	// videoId 원래 int인거 고려안해도 되나? String으로 받아야하나?
 	// 영상 상세 조회
 	@GetMapping("/video/{videoId}")
@@ -100,8 +113,10 @@ public class VideoController {
 	
 	// 영상 업로드
 	@PostMapping("/video")
-	private ResponseEntity<Video> upload(Video video, @RequestPart MultipartFile file, @RequestPart MultipartFile thumbnail) {
-		videoService.uploadVideo(video, file, thumbnail);
+	private ResponseEntity<Video> upload(Video video, @RequestPart List<MultipartFile> file) {
+		if (file.size()>=2) {
+			videoService.uploadVideo(video, file.get(0), file.get(1));
+		}
 		return new ResponseEntity<Video>(video, HttpStatus.OK);
 	}
 	
@@ -118,5 +133,18 @@ public class VideoController {
 		videoService.removeVideo(videoId);
 		return new ResponseEntity<Void>(HttpStatus.OK);
 	}
-
+	
+	// 3. video stream
+	@GetMapping(path = "/stream/{videoSrc}", produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)
+	public Resource video(@PathVariable String videoSrc) throws FileNotFoundException, IOException {
+		Resource res = resLoader.getResource("static/upload");
+	    return new ByteArrayResource(FileCopyUtils.copyToByteArray(new FileInputStream(res.getFile().getCanonicalPath() + "/" + videoSrc)));
+	}
+	
+	// 4. thumbnail
+	@GetMapping(value = "/thumbnail/{thumbnailImgSrc}", produces = MediaType.IMAGE_JPEG_VALUE)
+	public Resource getImageWithMediaType(@PathVariable String thumbnailImgSrc) throws IOException {
+		Resource res = resLoader.getResource("static/upload");
+	    return new ByteArrayResource(FileCopyUtils.copyToByteArray(new FileInputStream(res.getFile().getCanonicalPath() + "/" + thumbnailImgSrc)));
+	}
 }
