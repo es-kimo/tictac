@@ -1,11 +1,11 @@
 <template>
   <div class="wrapper">
     <div class="cont-video">
-      <button @click="addHashToLocation">
+      <RouterLink to="/@ryurlah/video/10000">
         <picture>
           <img
             @mouseover="emitHover"
-            src="http://localhost:8080/thumbnail/1700546507369_noeul.png"
+            :src="`${LOCAL_SERVER}/thumbnail/${video.thumbnailImgSrc}`"
             alt="사진입니다."
             class="img"
           />
@@ -20,9 +20,9 @@
           loop
           class="video"
         >
-          <source src="http://localhost:8080/stream/1700546507369_noeul.mp4" />
+          <source :src="`${LOCAL_SERVER}/stream/${video.videoSrc}`" />
         </video>
-      </button>
+      </RouterLink>
 
       <div class="cont-control">
         <div>
@@ -46,12 +46,14 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue';
 import type { Ref } from 'vue';
-import { useRouter } from 'vue-router';
 
 import IconBase from '../icon/IconBase.vue';
 import IconPlay from '../icon/IconPlay.vue';
 import IconVolumeUp from '../icon/IconVolumeUp.vue';
 import IconVolumeOff from '../icon/IconVolumeOff.vue';
+
+const LOCAL_SERVER = import.meta.env.VITE_LOCAL_SERVER;
+console.log(LOCAL_SERVER);
 
 const emit = defineEmits(['videoHover']);
 const props = defineProps(['video']);
@@ -73,11 +75,14 @@ const handleVolumeBtn = () => {
 };
 
 //영상 모달 띄우기
+/*
 const router = useRouter();
 const addHashToLocation = () => {
   history.pushState({}, '', '/@' + 'ryurlah' + '/video/' + encodeURIComponent(10000));
 };
 //10000 -> props.video.id
+<button @click="addHashToLocation">
+*/
 </script>
 
 <style scoped>

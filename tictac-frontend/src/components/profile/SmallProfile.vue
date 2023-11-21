@@ -1,9 +1,9 @@
 <template>
   <div class="wrapper">
-    <RouterLink to="">
+    <RouterLink :to="'@' + user.userId" class="link-img">
       <img src="@/assets/sample/excitedinseun.png" alt="프로필 사진입니다." class="img-profile" />
     </RouterLink>
-    <RouterLink to="" class="link-username">{{ user.username }}</RouterLink>
+    <RouterLink :to="'@' + user.userId" class="link-username">{{ user.username }}</RouterLink>
   </div>
 </template>
 
@@ -21,8 +21,13 @@ defineProps(['user']);
   gap: 10px;
 }
 
+.link-img {
+  display: inline-block;
+  width: 24px;
+}
+
 .img-profile {
-  height: 100%;
+  width: 100%;
   border-radius: 100%;
   aspect-ratio: 1/1;
   object-fit: cover;
