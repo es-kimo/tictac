@@ -129,7 +129,8 @@ table {
   border-spacing: 0;
 }
 img,
-svg {
+svg,
+video {
   vertical-align: top;
 }
 input,
