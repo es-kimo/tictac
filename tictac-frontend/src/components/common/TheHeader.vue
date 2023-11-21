@@ -15,7 +15,7 @@
       </RouterLink>
       <RouterLink to="/login" class="btn-login" v-if="isLogin">로그인</RouterLink>
       <button v-else @click="logout" class="btn-login">로그아웃</button>
-      <RouterLink to="/@ryurlah">
+      <RouterLink :to="'/@' + loginUserId">
         <img class="img-profile" src="@/assets/sample/excitedinseun.png" alt="" />
       </RouterLink>
     </div>
@@ -38,9 +38,11 @@ const checkLogin = () => {
 };
 
 const logout = () => {
-  sessionStorage.removeItem('access-token');
+  sessionStorage.clear();
   router.go(0); // 새로고침
 };
+
+const loginUserId = sessionStorage.getItem('userId');
 
 onMounted(() => {
   checkLogin();

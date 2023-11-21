@@ -11,7 +11,7 @@
           </RouterLink>
         </li>
         <li>
-          <RouterLink to="/@ryurlah">
+          <RouterLink :to="'/@' + loginUserId">
             <IconBase stroke-width="0.5">
               <IconHome></IconHome>
             </IconBase>
@@ -37,6 +37,8 @@
 import IconBase from '../icon/IconBase.vue';
 import IconHome from '../icon/IconHome.vue';
 import { RouterLink } from 'vue-router';
+
+const loginUserId = sessionStorage.getItem('userId');
 </script>
 
 <style scoped>

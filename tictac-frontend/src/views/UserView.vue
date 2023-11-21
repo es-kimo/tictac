@@ -27,19 +27,40 @@
 </template>
 
 <script setup lang="ts">
-import { computed, ref, type Ref } from 'vue';
+import { computed, onMounted, ref, type Ref } from 'vue';
 import BigProfile from '@/components/profile/BigProfile.vue';
 import TabItem from '@/components/common/TabItem.vue';
 import VideoCard from '@/components/video/VideoCard.vue';
+import { useVideoStore } from '@/stores/video';
+
+const videoStore = useVideoStore();
 
 const user = {
-  username: 'ryuname',
-  id: 'ryurlah'
+  username: sessionStorage.getItem('username'),
+  id: sessionStorage.getItem('userId')
 };
 
-// 1. 업로드한 동영상 통신
+const getUploadList = async () => {
+  await videoStore.getUploadList(user.id);
+  // console.log(videoStore.videoList);
+  // console.log(tabs[0].content);
+  tabs[0].content = videoStore.videoList;
+};
 
-// 2. 찜한 동영상 통신
+const getMyBookmarkList = async () => {
+  await videoStore.getMyBookmarkList(user.id);
+  console.log(videoStore.videoList);
+  console.log(tabs[1].content);
+  tabs[1].content = videoStore.videoList;
+};
+
+onMounted(() => {
+  // 1. 업로드한 동영상 통신
+  getUploadList();
+
+  // 2. 찜한 동영상 통신
+  getMyBookmarkList();
+});
 
 // tab
 const currentId = ref(0);

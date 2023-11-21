@@ -1,15 +1,22 @@
 import { ref } from 'vue';
 import { defineStore } from 'pinia';
 import axios from 'axios';
-
 import router from '@/router';
 
 const REST_COMMENT_API = `http://localhost:8080`;
 
 export const useCommentStore = defineStore('user', () => {
+  const commentList = ref([]);
+  const getCommentList = function (videoId: any) {
+    axios.get(REST_COMMENT_API + `/video/${videoId}/comment`).then((response: any) => {
+      commentList.value = response.data;
+      // console.log(response.data);
+    });
+  };
+
   const uploadComment = function (videoId: Number, comment: any) {
     console.log(comment.username);
-    axios({
+    return axios({
       url: REST_COMMENT_API + `/video/${videoId}/comment`,
       method: 'POST',
       headers: {
@@ -18,7 +25,8 @@ export const useCommentStore = defineStore('user', () => {
         'access-token': sessionStorage.getItem('access-token')
       },
       data: {
-        username: '김싸피', // 바꿔야함 - 원래있는 username이 꼭 들어와야함
+        userId: comment.userId,
+        username: comment.username,
         content: comment.content
       }
     })
@@ -32,5 +40,21 @@ export const useCommentStore = defineStore('user', () => {
       });
   };
 
-  return { uploadComment };
+  const deleteComment = function (videoId: Number, commentId: any) {
+    console.log(commentId);
+    // return axios({
+    //   url: REST_COMMENT_API + `/video/${videoId}/comment`,
+    //   method: 'DELETE',
+    //   data: {
+    //           commentId: commentId
+    //         }
+    //       });
+    return axios.delete(REST_COMMENT_API + `/video/${videoId}/comment`, {
+      params: {
+        commentId: commentId
+      }
+    });
+  };
+
+  return { commentList, getCommentList, uploadComment, deleteComment };
 });

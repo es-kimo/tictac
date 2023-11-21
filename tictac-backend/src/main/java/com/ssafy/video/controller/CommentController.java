@@ -51,7 +51,8 @@ public class CommentController {
 
 	// 댓글 삭제
 	@DeleteMapping("/video/{videoId}/comment")
-	private ResponseEntity<Void> delete(@PathVariable int videoId, int commentId) {
+	private ResponseEntity<Void> delete(@PathVariable int videoId, Integer commentId) {
+		System.out.println(commentId);
 		commentService.removeComment(videoId, commentId);
 		return new ResponseEntity<Void>(HttpStatus.OK);
 	}

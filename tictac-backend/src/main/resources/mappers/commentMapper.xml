@@ -5,14 +5,15 @@
 <mapper namespace="com.ssafy.video.model.dao.CommentDao">
 
 	<select id="selectAllComment" resultType="Comment">
-		SELECT Video_videoId, commentId, User_username as username, content, regDate
+		SELECT Video_videoId, commentId, User_userId as userId, User_username as username, content, regDate
 		FROM Comment
 		WHERE Video_videoId = #{videoId}
+		ORDER BY commentId DESC
 	</select>
 
 	<insert id="insertComment">
-		INSERT INTO Comment (Video_videoId, User_username, content, regDate)
-		VALUES (#{videoId}, #{comment.username}, #{comment.content}, now())
+		INSERT INTO Comment (Video_videoId, User_userId, User_username, content, regDate)
+		VALUES (#{videoId}, #{comment.userId}, #{comment.username}, #{comment.content}, now())
 	</insert>
 
 	<update id="updateComment">

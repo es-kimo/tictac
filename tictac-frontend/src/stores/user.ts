@@ -23,18 +23,8 @@ export const useUserStore = defineStore('user', () => {
   const loginUsername = ref('');
   const loginEmail = ref('');
 
-  // const base64ToArrayBuffer = (string) => {
-  //   var len = string.length;
-  //   var bytes = new Uint8Array(len);
-  //   for (var i = 0; i < len; i++) {
-  //     bytes[i] = string.charCodeAt(i);
-  //   }
-  //   return bytes.buffer;
-  // }
-
   // https://stackoverflow.com/questions/55700815/async-await-with-vuex-dispatch
   const login = function (id: string, pw: string) {
-
     return axios
       .post(`${REST_USER_API}/login`, {
         userId: id,
@@ -52,6 +42,10 @@ export const useUserStore = defineStore('user', () => {
         loginUserId.value = loginInfo['userId'];
         loginUsername.value = loginInfo['username'];
         loginEmail.value = loginInfo['email'];
+
+        sessionStorage.setItem('userId', loginInfo['userId']);
+        sessionStorage.setItem('username', loginInfo['username']);
+        sessionStorage.setItem('email', loginInfo['email']);
       })
       .catch((err: Error) => {
         console.log(err);

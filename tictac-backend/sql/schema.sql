@@ -1,4 +1,6 @@
--- DROP TABLE category;
+-- DROP TABLE `finaldb`.`Video`;
+-- DROP TABLE `finaldb`.`mybookmarklist`;
+-- DROP TABLE `finaldb`.`Comment`;
 SELECT * FROM user;
 SELECT * FROM video;
 SELECT * FROM mybookmarklist;
@@ -18,5 +20,5 @@ INSERT INTO mybookmarklist (User_userId, Video_videoId)
 VALUES ("ssafy", 10000),
 ("ssafy", 10001);
 
-INSERT INTO comment (Video_videoId, commentId, User_username, content, regDate)
-VALUES (10000, 1, "김싸피", "댓글입니다", STR_TO_DATE('15-11-2023','%d-%m-%Y'));
+INSERT INTO comment (Video_videoId, commentId, User_userId, User_username, content, regDate)
+VALUES (10000, 1, "ssafy", "김싸피", "댓글입니다", STR_TO_DATE('15-11-2023','%d-%m-%Y'));

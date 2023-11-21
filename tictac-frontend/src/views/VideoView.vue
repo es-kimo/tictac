@@ -1,28 +1,23 @@
 <template>
   <div>video detail</div>
-  <CommentUploadCard />
-  <CommentCard v-for="comment in commentList" :comment="comment" />
+  <CommentUploadForm />
+  <CommentCard v-for="comment in commentStore.commentList" :comment="comment" />
 </template>
 
 <script setup lang="ts">
 import { ref, onMounted } from 'vue';
+import { useCommentStore } from '@/stores/comment';
 import { useRoute } from 'vue-router';
 import axios from 'axios';
-import CommentUploadCard from '@/components/comment/CommentUploadCard.vue';
+import CommentUploadForm from '@/components/comment/CommentUploadForm.vue';
 import CommentCard from '@/components/comment/CommentCard.vue';
 
+const commentStore = useCommentStore();
 const route = useRoute();
-const commentList = ref([]);
 
-const getCommentList = function () {
-  axios.get(`http://localhost:8080/video/${route.params.videoId}/comment`).then((response: any) => {
-    commentList.value = response.data;
-    // console.log(response.data);
-  });
-};
 
 onMounted(() => {
-  getCommentList();
+  commentStore.getCommentList(route.params.videoId);
   // console.log(commentList.value);
 });
 
