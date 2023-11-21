@@ -5,7 +5,7 @@
         <picture>
           <img
             @mouseover="emitHover"
-            src="http://localhost:8080/thumbnail/1700546507369_noeul.png"
+            :src="`${LOCAL_SERVER}/thumbnail/1700549229955_noeul.png`"
             alt="사진입니다."
             class="img"
           />
@@ -20,7 +20,7 @@
           loop
           class="video"
         >
-          <source src="http://localhost:8080/stream/1700546507369_noeul.mp4" />
+          <source src="http://localhost:8080/stream/1700549229955_noeul.mp4" />
         </video>
       </button>
 
@@ -52,6 +52,8 @@ import IconBase from '../icon/IconBase.vue';
 import IconPlay from '../icon/IconPlay.vue';
 import IconVolumeUp from '../icon/IconVolumeUp.vue';
 import IconVolumeOff from '../icon/IconVolumeOff.vue';
+
+const LOCAL_SERVER = import.meta.env.VITE_LOCAL_SERVER;
 
 const emit = defineEmits(['videoHover']);
 const props = defineProps(['video']);

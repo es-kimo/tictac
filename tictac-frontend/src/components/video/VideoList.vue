@@ -1,7 +1,7 @@
 <template>
   <ul>
     <li>
-      <VideoCard @video-hover="handleHover" v-for="video in videoList">
+      <VideoCard @video-hover="handleHover" v-for="video in videoList" :video="video">
         <template v-slot:outer>
           <VideoInfo :content="video.content" :username="video.userId" />
         </template>
@@ -15,6 +15,7 @@ import VideoCard from './VideoCard.vue';
 import VideoInfo from './VideoInfo.vue';
 import { onMounted, ref, type Ref } from 'vue';
 import { useVideoStore } from '@/stores/video';
+import { type Video } from '@/stores/video';
 
 const videoStore = useVideoStore();
 
@@ -35,11 +36,10 @@ const getWholeVideoList = async () => {
   videoList.value = videoStore.videoList;
 };
 
-const videoList: ref([]);
+const videoList: Ref<Video[]> = ref([]);
 
 onMounted(() => {
   getWholeVideoList();
-  console.log(videoList);
 });
 </script>
 
