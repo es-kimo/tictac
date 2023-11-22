@@ -12,6 +12,17 @@ VALUES ("ssafy", "1234", "김싸피", "ssafy@ssafy.com"),
 INSERT INTO video (User_userId, content, videoSrc, regDate, thumbnailImgSrc, categoryId)
 VALUES
 ("ssafy", "파쿠르 영상입니다", "13f64e4c-aef3-449a-b2ad-24179714f5ef_noeul.mp4", STR_TO_DATE('22-11-2023','%d-%m-%Y'), "13f64e4c-aef3-449a-b2ad-24179714f5ef_noeul.png", "파쿠르"),
+("ssafy", "파쿠르2 영상입니다", "13f64e4c-aef3-449a-b2ad-24179714f5ef_noeul.mp4", STR_TO_DATE('22-11-2023','%d-%m-%Y'), "13f64e4c-aef3-449a-b2ad-24179714f5ef_noeul.png", "파쿠르"),
+("ssafy", "파쿠르3 영상입니다", "13f64e4c-aef3-449a-b2ad-24179714f5ef_noeul.mp4", STR_TO_DATE('22-11-2023','%d-%m-%Y'), "13f64e4c-aef3-449a-b2ad-24179714f5ef_noeul.png", "파쿠르"),
+("ssafy", "파쿠르4 영상입니다", "13f64e4c-aef3-449a-b2ad-24179714f5ef_noeul.mp4", STR_TO_DATE('22-11-2023','%d-%m-%Y'), "13f64e4c-aef3-449a-b2ad-24179714f5ef_noeul.png", "파쿠르"),
+("ssafy", "파쿠르5 영상입니다", "13f64e4c-aef3-449a-b2ad-24179714f5ef_noeul.mp4", STR_TO_DATE('22-11-2023','%d-%m-%Y'), "13f64e4c-aef3-449a-b2ad-24179714f5ef_noeul.png", "파쿠르"),
+("ssafy", "파쿠르6 영상입니다", "13f64e4c-aef3-449a-b2ad-24179714f5ef_noeul.mp4", STR_TO_DATE('22-11-2023','%d-%m-%Y'), "13f64e4c-aef3-449a-b2ad-24179714f5ef_noeul.png", "파쿠르"),
+("ssafy", "파쿠르7 영상입니다", "13f64e4c-aef3-449a-b2ad-24179714f5ef_noeul.mp4", STR_TO_DATE('22-11-2023','%d-%m-%Y'), "13f64e4c-aef3-449a-b2ad-24179714f5ef_noeul.png", "파쿠르"),
+("ssafy", "파쿠르8 영상입니다", "13f64e4c-aef3-449a-b2ad-24179714f5ef_noeul.mp4", STR_TO_DATE('22-11-2023','%d-%m-%Y'), "13f64e4c-aef3-449a-b2ad-24179714f5ef_noeul.png", "파쿠르"),
+("ssafy", "파쿠르9 영상입니다", "13f64e4c-aef3-449a-b2ad-24179714f5ef_noeul.mp4", STR_TO_DATE('22-11-2023','%d-%m-%Y'), "13f64e4c-aef3-449a-b2ad-24179714f5ef_noeul.png", "파쿠르"),
+("ssafy", "파쿠르10 영상입니다", "13f64e4c-aef3-449a-b2ad-24179714f5ef_noeul.mp4", STR_TO_DATE('22-11-2023','%d-%m-%Y'), "13f64e4c-aef3-449a-b2ad-24179714f5ef_noeul.png", "파쿠르"),
+("ssafy", "파쿠르11 영상입니다", "13f64e4c-aef3-449a-b2ad-24179714f5ef_noeul.mp4", STR_TO_DATE('22-11-2023','%d-%m-%Y'), "13f64e4c-aef3-449a-b2ad-24179714f5ef_noeul.png", "파쿠르"),
+("ssafy", "파쿠르12 영상입니다", "13f64e4c-aef3-449a-b2ad-24179714f5ef_noeul.mp4", STR_TO_DATE('22-11-2023','%d-%m-%Y'), "13f64e4c-aef3-449a-b2ad-24179714f5ef_noeul.png", "파쿠르"),
 ("ssafy2", "독 어질리티 영상입니다", "a10fb644-54ad-414e-8c8f-f726bf190dfa_noeul.mp4", STR_TO_DATE('22-11-2023','%d-%m-%Y'), "a10fb644-54ad-414e-8c8f-f726bf190dfa_noeul.png", "독 어질리티");
 
 INSERT INTO mybookmarklist (User_userId, Video_videoId)

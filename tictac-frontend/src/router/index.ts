@@ -37,6 +37,9 @@ const router = createRouter({
             if (isLogin.value) {
               console.log('로그인 안 된 상태임');
               return { name: 'login' };
+            } else {
+              console.log('로그인된 상태')
+
             }
           }
         },

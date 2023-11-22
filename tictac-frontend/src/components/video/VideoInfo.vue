@@ -8,12 +8,14 @@
 <script setup lang="ts">
 import SmallProfile from '../Profile/SmallProfile.vue';
 
-const props = defineProps(['content', 'user', 'content', 'username']);
+const props = defineProps(['content', 'user', 'content', 'userId']);
 const user = {
   // user dto
-  username: props.username,
+  userId: props.userId,
   id: ''
 };
+
+// console.log(props.content);
 </script>
 
 <style scoped>
@@ -21,6 +23,8 @@ const user = {
   display: flex;
   flex-direction: column;
   gap: 8px;
+  padding-top: 4px;
+  padding-bottom: 8px;
 }
 .txt-content {
   overflow: hidden;

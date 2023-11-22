@@ -3,7 +3,7 @@
     <RouterLink :to="'@' + user.userId" class="link-img">
       <img src="@/assets/sample/excitedinseun.png" alt="프로필 사진입니다." class="img-profile" />
     </RouterLink>
-    <RouterLink :to="'@' + user.userId" class="link-username">{{ user.username }}</RouterLink>
+    <RouterLink :to="'@' + user.userId" class="link-username">{{ user.userId }}</RouterLink>
   </div>
 </template>
 

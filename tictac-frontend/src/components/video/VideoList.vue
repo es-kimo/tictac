@@ -1,9 +1,9 @@
 <template>
   <ul>
-    <li>
-      <VideoCard @video-hover="handleHover" v-for="video in videoList" :video="video">
+    <li class="boxes">
+      <VideoCard class="box" @video-hover="handleHover" v-for="video in videoList" :video="video">
         <template v-slot:outer>
-          <VideoInfo :content="video.content" :username="video.userId" />
+          <VideoInfo :content="video.content" :userId="video.userId" />
         </template>
       </VideoCard>
     </li>
@@ -43,4 +43,16 @@ onMounted(() => {
 });
 </script>
 
-<style scoped></style>
+<style scoped>
+.boxes {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  flex-basis: 200px;
+}
+
+.box {
+  margin: 6px;
+  min-width: 100px;
+}
+</style>
