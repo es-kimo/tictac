@@ -58,6 +58,7 @@
         style="display: none"
       ></video>
       <canvas ref="canvasElem" style="display: none"></canvas>
+      <img ref="test" src="" alt="" />
       <div class="cont-pick">
         <div class="cont-candidate">
           <img
@@ -90,6 +91,7 @@ import { useVideoStore } from '@/stores/video';
 
 import IconBase from '../icon/IconBase.vue';
 import IconVideo from '@/components/icon/IconVideo.vue';
+import { useRouter } from 'vue-router';
 
 const inputElem: Ref<null | HTMLInputElement> = ref(null);
 const categoryElem: Ref<null | HTMLSelectElement> = ref(null);
@@ -229,6 +231,8 @@ const onLoadedMetadata = () => {
   }, 200);
 };
 
+const test: Ref<null | HTMLImageElement> = ref(null);
+const router = useRouter();
 // upload video
 const videoStore = useVideoStore();
 const handleSubmit = async (e: Event) => {
@@ -247,7 +251,7 @@ const handleSubmit = async (e: Event) => {
   // thumbnail
   canvasElem
     .value!.getContext('2d')!
-    .drawImage(videoElem.value!, 0, 0, canvasElem.value!.width, canvasElem.value!.height);
+    .drawImage(chosenVideoElem.value!, 0, 0, canvasElem.value!.width, canvasElem.value!.height);
   const blob: Blob = await new Promise((resolve) =>
     canvasElem.value!.toBlob((blob: any) => resolve(blob))
   );
@@ -256,11 +260,15 @@ const handleSubmit = async (e: Event) => {
     canvasElem.value!.toBlob(resolve)
   );
   */
-  formData.append('file', blob, 'thumbnail');
+  test.value!.src = URL.createObjectURL(blob);
+  formData.append('file', blob);
 
   // 통신
   try {
-    videoStore.uploadVideo(formData);
+    await videoStore.uploadVideo(formData);
+    router.push({
+      name: 'home'
+    });
   } catch (error) {
     alert('업로드 실패');
     console.log(error);

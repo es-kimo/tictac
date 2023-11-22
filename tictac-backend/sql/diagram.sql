@@ -17,6 +17,11 @@ SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,N
 CREATE SCHEMA IF NOT EXISTS `finaldb` DEFAULT CHARACTER SET utf8 ;
 USE `finaldb` ;
 
+DROP TABLE IF EXISTS `finaldb`.`Video`;
+DROP TABLE IF EXISTS `finaldb`.`mybookmarklist`;
+DROP TABLE IF EXISTS `finaldb`.`Comment`;
+DROP TABLE IF EXISTS `finaldb`.`User`;
+
 -- -----------------------------------------------------
 -- Table `finaldb`.`User`
 -- -----------------------------------------------------
@@ -52,7 +57,7 @@ CREATE TABLE IF NOT EXISTS `finaldb`.`Video` (
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
-
+ALTER TABLE Video AUTO_INCREMENT=10000;
 
 -- -----------------------------------------------------
 -- Table `finaldb`.`MyBookmarkList`
