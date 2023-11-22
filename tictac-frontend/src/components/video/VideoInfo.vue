@@ -15,7 +15,7 @@ const user = {
   id: ''
 };
 
-console.log(props.content);
+// console.log(props.content);
 </script>
 
 <style scoped>
@@ -23,6 +23,8 @@ console.log(props.content);
   display: flex;
   flex-direction: column;
   gap: 8px;
+  padding-top: 4px;
+  padding-bottom: 8px;
 }
 .txt-content {
   overflow: hidden;
