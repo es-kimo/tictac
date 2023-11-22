@@ -32,4 +32,8 @@ defineProps(['user']);
   aspect-ratio: 1/1;
   object-fit: cover;
 }
+
+.link-username {
+  font-size: 16px;
+}
 </style>

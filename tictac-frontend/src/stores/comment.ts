@@ -15,12 +15,12 @@ const REST_COMMENT_API = `http://localhost:8080`;
 
 export const useCommentStore = defineStore('user', () => {
   const commentList = ref([]);
-  const getCommentList = function (videoId: any) {
-    axios.get(REST_COMMENT_API + `/video/${videoId}/comment`).then((response: any) => {
+  function getCommentList(videoId: any) {
+    return axios.get(REST_COMMENT_API + `/video/${videoId}/comment`).then((response: any) => {
       commentList.value = response.data;
       // console.log(response.data);
     });
-  };
+  }
 
   const uploadComment = function (videoId: Number, comment: any) {
     console.log(comment.username);

@@ -20,9 +20,9 @@ function b64DecodeUnicode(str: string) {
 
 export interface User {
   userId: string;
-  password: string;
+  password?: string;
   username: string;
-  email: string;
+  email?: string;
 }
 
 export const useUserStore = defineStore('user', () => {
@@ -31,7 +31,7 @@ export const useUserStore = defineStore('user', () => {
   const loginEmail = ref('');
 
   // https://stackoverflow.com/questions/55700815/async-await-with-vuex-dispatch
-  const login = function (id: string, pw: string) {
+  function login(id: string, pw: string) {
     return axios
       .post(`${REST_USER_API}/login`, {
         userId: id,
@@ -57,7 +57,7 @@ export const useUserStore = defineStore('user', () => {
       .catch((err: Error) => {
         console.log(err);
       });
-  };
+  }
 
   const logout = () => {
     sessionStorage.removeItem('access-token');

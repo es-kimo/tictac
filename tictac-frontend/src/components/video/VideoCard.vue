@@ -1,7 +1,7 @@
 <template>
   <div class="wrapper">
     <div class="cont-video">
-      <RouterLink to="/@ryurlah/video/10000">
+      <RouterLink :to="`/@ryurlah/video/${video.videoId}`">
         <picture>
           <img
             @mouseover="emitHover"
@@ -46,6 +46,7 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue';
 import type { Ref } from 'vue';
+import type { Video } from '@/stores/video';
 
 import IconBase from '../icon/IconBase.vue';
 import IconPlay from '../icon/IconPlay.vue';
@@ -53,10 +54,9 @@ import IconVolumeUp from '../icon/IconVolumeUp.vue';
 import IconVolumeOff from '../icon/IconVolumeOff.vue';
 
 const LOCAL_SERVER = import.meta.env.VITE_LOCAL_SERVER;
-console.log(LOCAL_SERVER);
 
 const emit = defineEmits(['videoHover']);
-const props = defineProps(['video']);
+const props = defineProps<{ video: Video }>();
 //TODO: 숫자를 1.7M 같은 형태로 가공하기
 
 //영상 호버 자동재생

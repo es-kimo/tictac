@@ -31,28 +31,10 @@ const props = defineProps({
   comment: Object
 });
 
-function b64DecodeUnicode(str) {
-  return decodeURIComponent(
-    Array.prototype.map
-      .call(atob(str), function (c) {
-        return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
-      })
-      .join('')
-  );
-}
-
-const isSameUser = () => {
-  const token = sessionStorage.getItem('access-token').split('.');
-  let loginInfo = token[1]; // 3개 중에 payload 고름
-  loginInfo = b64DecodeUnicode(loginInfo);
-  // console.log(loginInfo);
-  loginInfo = JSON.parse(loginInfo);
-
-  return props.comment.userId === loginInfo['userId'];
-};
+// TODO: 생각해볼 문제 - 클라이언트에서 sessionStorage.setItem('userId', 'inseung') 등의 공격이 들어올 수 있음.
+const isSameUser = () => props.comment.userId === sessionStorage.getItem('userId');
 
 const handleDeleteCommentButton = async () => {
-  console.log(isSameUser());
   await commentStore.deleteComment(route.params.videoId, props.comment.commentId);
   router.go(0);
 };
