@@ -1,17 +1,16 @@
 <template>
-  <div>
-    <form action="" @submit.prevent="handleUploadCommentButton">
-      <!-- <label for="content"></label> -->
-      <input
-        type="text"
-        id="content"
-        name="content"
-        placeholder="댓글을 입력하세요.."
-        v-model="comment.content"
-      />
-      <button type="submit" class="btn-uploadComment" :disabled="!isFormFilled">등록</button>
-    </form>
-  </div>
+  <form class="form" action="" @submit.prevent="handleUploadCommentButton">
+    <label for="content" class="sr-only">댓글</label>
+    <input
+      class="inp-comment"
+      type="text"
+      id="content"
+      name="content"
+      placeholder="따뜻한 한 마디 전해주세요..."
+      v-model="comment.content"
+    />
+    <button type="submit" class="btn-uploadComment" :disabled="!isFormFilled">등록</button>
+  </form>
 </template>
 
 <script setup>
@@ -63,6 +62,18 @@ const handleUploadCommentButton = async () => {
 </script>
 
 <style scoped>
+.form {
+  display: flex;
+  justify-content: space-between;
+}
+
+.inp-comment {
+  flex-grow: 1;
+  padding: 12px;
+  border: 1px solid var(--vt-c-text-dark-2);
+  border-radius: 4px;
+}
+
 .btn-uploadComment {
   padding: 4px 16px;
   font-size: 16px;
