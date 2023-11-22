@@ -38,7 +38,7 @@
 	
 	
 
-	<select id="selectOneVideo" parameterType="String" resultType="Video">
+	<select id="selectOneVideo" parameterType="Integer" resultType="Video">
 		SELECT videoId, User_userId as userId, content, videoSrc, regDate, heartCnt, viewCnt, thumbnailImgSrc, categoryId
 		FROM Video
 		WHERE videoId = #{videoId}

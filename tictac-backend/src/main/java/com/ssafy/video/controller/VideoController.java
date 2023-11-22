@@ -109,7 +109,7 @@ public class VideoController {
 	// videoId 원래 int인거 고려안해도 되나? String으로 받아야하나?
 	// 영상 상세 조회
 	@GetMapping("/video/{videoId}")
-	private ResponseEntity<Video> detail(@PathVariable int videoId) {
+	private ResponseEntity<Video> detail(@PathVariable Integer videoId) {
 		Video video = videoService.getVideoDetail(videoId);
 		return new ResponseEntity<Video>(video, HttpStatus.OK);
 	}

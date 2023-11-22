@@ -1,21 +1,20 @@
-import { ref, computed, type Ref } from 'vue';
+import { ref, type Ref } from 'vue';
 import { defineStore } from 'pinia';
-import router from '@/router';
 import axios from 'axios';
 
 export interface Video {
-  videoId: number;
-  userId: string;
-  content: string;
-  videoSrc: string;
-  orgVideoSrc: string;
-  regDate: Date;
-  heartCnt: number;
-  bookmarkCnt: number;
-  viewCnt: number;
-  thumbnailImgSrc: string;
-  orgThumbnailImgSrc: string;
-  categoryId: string;
+  videoId?: number;
+  userId?: string;
+  content?: string;
+  videoSrc?: string;
+  orgVideoSrc?: string;
+  regDate?: Date;
+  heartCnt?: number;
+  bookmarkCnt?: number;
+  viewCnt?: number;
+  thumbnailImgSrc?: string;
+  orgThumbnailImgSrc?: string;
+  categoryId?: string;
 }
 
 const REST_VIDEO_API = `http://localhost:8080`;
@@ -32,13 +31,13 @@ export const useVideoStore = defineStore('video', () => {
   };
 
   const getSearchList = function () {
-    axios.get(REST_VIDEO_API + '/videoList/search').then((response: any) => {
+    return axios.get(REST_VIDEO_API + '/videoList/search').then((response: any) => {
       videoList.value = response.data;
     });
   };
 
   const getCategoryList = function (categoryId: any) {
-    axios.get(REST_VIDEO_API + `/videoList/${categoryId}`).then((response: any) => {
+    return axios.get(REST_VIDEO_API + `/videoList/${categoryId}`).then((response: any) => {
       videoList.value = response.data;
     });
   };
@@ -58,11 +57,11 @@ export const useVideoStore = defineStore('video', () => {
 
   // 2. 영상 1개
 
-  const video = ref({});
+  const video: Ref<Video | null> = ref(null);
 
   // 영상 조회
-  const getVideo = function (videoId: Number) {
-    axios.get(REST_VIDEO_API + `/video/${videoId}`).then((response: any) => {
+  const getVideo = function (videoId: any) {
+    return axios.get(REST_VIDEO_API + `/video/${videoId}`).then((response: any) => {
       video.value = response.data;
     });
   };
@@ -103,6 +102,7 @@ export const useVideoStore = defineStore('video', () => {
   };
 
   return {
+    video,
     videoList,
     getWholeVideoList,
     getSearchList,
