@@ -53,7 +53,7 @@ import IconVolumeUp from '../icon/IconVolumeUp.vue';
 import IconVolumeOff from '../icon/IconVolumeOff.vue';
 
 const LOCAL_SERVER = import.meta.env.VITE_LOCAL_SERVER;
-console.log(LOCAL_SERVER);
+// console.log(LOCAL_SERVER);
 
 const emit = defineEmits(['videoHover']);
 const props = defineProps(['video']);
