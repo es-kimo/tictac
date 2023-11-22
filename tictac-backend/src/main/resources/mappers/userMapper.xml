@@ -10,4 +10,10 @@
 	WHERE userId = #{userId}
 </select>
 
+<select id="selectUsername" parameterType="String">
+	SELECT username
+	FROM User
+	WHERE userId = #{userId}
+</select>
+
 </mapper>

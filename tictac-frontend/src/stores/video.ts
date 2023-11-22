@@ -46,7 +46,7 @@ export const useVideoStore = defineStore('video', () => {
   const getUploadList = function (userId: any) {
     return axios.get(REST_VIDEO_API + `/uploadList/${userId}`).then((response: any) => {
       videoList.value = response.data;
-      console.log(videoList.value);
+      // console.log(videoList.value);
     });
   };
 

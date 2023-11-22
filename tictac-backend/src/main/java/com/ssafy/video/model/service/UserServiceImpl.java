@@ -25,5 +25,11 @@ public class UserServiceImpl implements UserService {
 		return null;
 	}
 
+	@Override
+	public String getUsername(String userId) {
+		String username = userDao.selectUsername(userId);
+		return username;
+	}
+
 
 }
