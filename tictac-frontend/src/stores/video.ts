@@ -71,7 +71,7 @@ export const useVideoStore = defineStore('video', () => {
   const uploadVideo = function (formData: any) {
     // console.log(video.videoId);
     // console.log(video.userId);
-    axios
+    return axios
       .post(REST_VIDEO_API + '/video', formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
@@ -80,9 +80,6 @@ export const useVideoStore = defineStore('video', () => {
       })
       .then((res) => {
         console.log(res);
-        router.push({
-          name: 'home'
-        });
       })
       .catch((err: Error) => {
         console.log(err.message);

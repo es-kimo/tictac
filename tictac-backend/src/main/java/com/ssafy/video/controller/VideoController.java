@@ -10,6 +10,7 @@ import java.util.Map;
 import org.apache.tomcat.util.http.fileupload.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ByteArrayResource;
+import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceLoader;
 import org.springframework.http.HttpStatus;
@@ -37,6 +38,8 @@ import io.swagger.annotations.ApiParam;
 @RestController
 @CrossOrigin
 public class VideoController {
+	
+	private String uploadPath = new FileSystemResource("src/main/resources/static/upload").getFile().getAbsolutePath();
 	
 	@Autowired
 	ResourceLoader resLoader;
@@ -137,14 +140,12 @@ public class VideoController {
 	// 3. video stream
 	@GetMapping(path = "/stream/{videoSrc}", produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)
 	public Resource video(@PathVariable String videoSrc) throws FileNotFoundException, IOException {
-		Resource res = resLoader.getResource("static/upload");
-	    return new ByteArrayResource(FileCopyUtils.copyToByteArray(new FileInputStream(res.getFile().getCanonicalPath() + "/" + videoSrc)));
+	    return new ByteArrayResource(FileCopyUtils.copyToByteArray(new FileInputStream(uploadPath+"/"+videoSrc)));
 	}
 	
 	// 4. thumbnail
 	@GetMapping(value = "/thumbnail/{thumbnailImgSrc}", produces = MediaType.IMAGE_JPEG_VALUE)
 	public Resource getImageWithMediaType(@PathVariable String thumbnailImgSrc) throws IOException {
-		Resource res = resLoader.getResource("static/upload");
-	    return new ByteArrayResource(FileCopyUtils.copyToByteArray(new FileInputStream(res.getFile().getCanonicalPath() + "/" + thumbnailImgSrc)));
+	    return new ByteArrayResource(FileCopyUtils.copyToByteArray(new FileInputStream(uploadPath+"/"+thumbnailImgSrc)));
 	}
 }

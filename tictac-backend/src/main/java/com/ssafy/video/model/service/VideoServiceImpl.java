@@ -3,7 +3,12 @@ package com.ssafy.video.model.service;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.UUID;
 
 import javax.imageio.ImageIO;
 
@@ -13,6 +18,8 @@ import org.bytedeco.javacv.Java2DFrameConverter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceLoader;
 import org.springframework.stereotype.Service;
@@ -24,6 +31,8 @@ import com.ssafy.video.model.dto.Video;
 @Service
 public class VideoServiceImpl implements VideoService {
 
+    private String uploadPath = new FileSystemResource("src/main/resources/static/upload").getFile().getAbsolutePath();
+	
 	private VideoDao videoDao;
 	
 	@Autowired
@@ -90,47 +99,37 @@ public class VideoServiceImpl implements VideoService {
 	public int removeVideo(int videoId) {
 		return videoDao.deleteVideo(videoId);
 	}
-
+	
 	private void fileHandling(Video video, MultipartFile file, MultipartFile thumbnail) throws IOException {
-		Resource res = resLoader.getResource("static/upload");
-		File folder = new File(res.getFile().getCanonicalPath());
-		if (!folder.exists()) {
-			if (folder.mkdirs()) {;
-				System.out.println("folder created");
-			}
-		}
-		
-		logger.debug("res: {}", res.getFile().getCanonicalPath());
+		//폴더 생성
+		File uploadPathFolder = new File(uploadPath);
+        if(uploadPathFolder.exists() == false) {
+	        uploadPathFolder.mkdirs();
+        }
+
 		if (file != null && file.getSize()>0) {
-			//1. 비디오 저장
-			video.setVideoSrc(System.currentTimeMillis() + "_" + file.getOriginalFilename());
+			
+			//UUID
+	        String uuid = UUID.randomUUID().toString();
+	        //비디오 객체 수정
+			video.setVideoSrc(uuid + "_" + file.getOriginalFilename());
 			video.setOrgVideoSrc(file.getOriginalFilename());
-			file.transferTo(new File(res.getFile().getCanonicalPath() + "/" + video.getVideoSrc()));
+			int idx = video.getOrgVideoSrc().lastIndexOf(".");
+			video.setThumbnailImgSrc(uuid + "_" + video.getOrgVideoSrc().substring(0, idx) + ".png");
 			
-			//2. 썸네일 저장
-			int idx = video.getVideoSrc().lastIndexOf(".");
-			video.setThumbnailImgSrc(video.getVideoSrc().substring(0, idx) + ".png");
-			thumbnail.transferTo(new File(res.getFile().getCanonicalPath() + "/" + video.getThumbnailImgSrc()));
-			
-			//https://stackoverflow.com/questions/37163978/how-to-get-a-thumbnail-of-an-uploaded-video-file
-//			FFmpegFrameGrabber frameGrabber = new FFmpegFrameGrabber(res.getFile().getCanonicalPath() + "/" + video.getVideoSrc());
-//			frameGrabber.start();
-//			Java2DFrameConverter aa = new Java2DFrameConverter();
-//			try {
-//			    BufferedImage bi;
-//			    Frame f = frameGrabber.grabKeyFrame();
-//			    bi = aa.convert(f);
-//			    
-//			    while (bi!=null) {
-//			    	video.setThumbnailImgSrc(System.currentTimeMillis() + "_" + video.getOrgVideoSrc() + ".png");
-//			        ImageIO.write(bi, "png", new File(res.getFile().getCanonicalPath() + "/" + video.getThumbnailImgSrc()));
-//			        f = frameGrabber.grabKeyFrame();
-//			        bi = aa.convert(f);
-//			    }
-//			    frameGrabber.stop();
-//			} catch (Exception e) {
-//			    e.printStackTrace();
-//			}
+	        //저장할 파일 이름 중간에 "_"를 이용하여 구분
+	        String saveVideoName = uploadPath + File.separator +  video.getVideoSrc();
+	        String saveThumbnailName = uploadPath + File.separator + video.getThumbnailImgSrc();
+	        //Paths.get() 메서드는 특정 경로의 파일 정보를 가져옵니다.(경로 정의하기)
+	        Path saveVideoPath = Paths.get(saveVideoName);
+	        Path saveThumbnailPath = Paths.get(saveThumbnailName);
+	        
+			try {
+	        	file.transferTo(saveVideoPath);
+	            thumbnail.transferTo(saveThumbnailPath);
+	        } catch (IOException e) {
+	             e.printStackTrace();
+	        }
 		}
 	}
 

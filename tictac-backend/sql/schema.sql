@@ -1,6 +1,3 @@
--- DROP TABLE `finaldb`.`Video`;
--- DROP TABLE `finaldb`.`mybookmarklist`;
--- DROP TABLE `finaldb`.`Comment`;
 SELECT * FROM user;
 SELECT * FROM video;
 SELECT * FROM mybookmarklist;
@@ -12,9 +9,10 @@ VALUES ("ssafy", "1234", "김싸피", "ssafy@ssafy.com"),
 ("ssafy2", "5678", "김싸피2", "ssafy2@ssafy.com");
 
 -- video 테이블에 데이터 써줌
-INSERT INTO video (videoId, User_userId, content, videoSrc, regDate, heartCnt, bookmarkCnt, viewCnt, thumbnailImgSrc, categoryId)
-VALUES (10000, "ssafy", "파쿠르 영상입니다", "", STR_TO_DATE('15-11-2023','%d-%m-%Y'), 0, 0, 0, "", "파쿠르"), 
-(10001, "ssafy2", "스케이트보드 영상입니다", "", STR_TO_DATE('15-11-2023','%d-%m-%Y'), 0, 0, 0, "", "파쿠르");
+INSERT INTO video (User_userId, content, videoSrc, regDate, thumbnailImgSrc, categoryId)
+VALUES
+("ssafy", "파쿠르 영상입니다", "13f64e4c-aef3-449a-b2ad-24179714f5ef_noeul.mp4", STR_TO_DATE('22-11-2023','%d-%m-%Y'), "13f64e4c-aef3-449a-b2ad-24179714f5ef_noeul.png", "파쿠르"),
+("ssafy2", "독 어질리티 영상입니다", "a10fb644-54ad-414e-8c8f-f726bf190dfa_noeul.mp4", STR_TO_DATE('22-11-2023','%d-%m-%Y'), "a10fb644-54ad-414e-8c8f-f726bf190dfa_noeul.png", "독 어질리티");
 
 INSERT INTO mybookmarklist (User_userId, Video_videoId)
 VALUES ("ssafy", 10000),
