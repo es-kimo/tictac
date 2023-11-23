@@ -12,7 +12,7 @@
       <RouterLink :to="'/@' + user.id" class="link-username">
         {{ user.username.value }}
       </RouterLink>
-      <RouterLink :to="'/@' + user.id" class="btn-edit"> 프로필 편집 </RouterLink>
+      <!-- <RouterLink :to="'/@' + user.id" class="btn-edit"> 프로필 편집 </RouterLink> -->
     </div>
   </div>
 </template>
@@ -30,7 +30,7 @@ defineProps(['user']);
   height: fit-content;
 
   display: flex;
-  gap: 20px;
+  gap: 30px;
 }
 
 .link-img {
@@ -49,24 +49,27 @@ defineProps(['user']);
 .cont-info {
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  justify-content: center;
+  gap: 20px;
 }
 
 .link-id {
-  font-size: 32px;
+  font-size: 42px;
   font-weight: bold;
+  line-height: 1;
 }
 
 .link-username {
   font-size: 18px;
   font-weight: 600;
+  line-height: 1;
 }
 
-.btn-edit {
+/* .btn-edit {
   font-size: 16px;
   border: 1px solid;
   padding: 0 16px;
   border-radius: 4px;
   color: var(--vt-c-divider-dark-1);
-}
+} */
 </style>

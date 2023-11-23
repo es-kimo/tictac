@@ -1,16 +1,12 @@
 <template>
-  <ul>
-    <li class="boxes">
+  <ul class="list-category">
+    <li v-for="video in videoList">
       <CategoryCard
         @update-category="updateCategory"
         class="box"
         @video-hover="handleHover"
-        v-for="video in videoList"
         :video="video"
       >
-        <!-- <template v-slot:outer>
-          <VideoInfo :content="video.content" :userId="video.userId" />
-        </template> -->
       </CategoryCard>
     </li>
   </ul>
@@ -18,7 +14,6 @@
 
 <script setup lang="ts">
 import CategoryCard from './CategoryCard.vue';
-import VideoInfo from './VideoInfo.vue';
 import { onMounted, ref, type Ref } from 'vue';
 import { useVideoStore } from '@/stores/video';
 import { type Video } from '@/stores/video';
@@ -38,7 +33,7 @@ const handleHover = (showVideoRef: Ref<boolean>) => {
   }
 };
 
-const getCategories = async (categoryNums: Number) => {
+const getCategories = async (categoryNums: number) => {
   await videoStore.getWholeVideoList();
   const tempList = [];
   // categoryNums 만큼 video 가져옴
@@ -60,16 +55,18 @@ const updateCategory = function (categoryId: string) {
 </script>
 
 <style scoped>
-.boxes {
+.list-category {
   display: flex;
   flex-direction: row;
-  flex-wrap: nowrap;
   justify-content: center;
-  flex-basis: 200px;
+  gap: 20px;
+  background-color: green;
 }
 
-.box {
-  margin: 6px;
-  min-width: 226px;
+.list-category li {
+  background-color: yellow;
+  width: 226px;
+  height: 302px;
+  flex-shrink: 0;
 }
 </style>

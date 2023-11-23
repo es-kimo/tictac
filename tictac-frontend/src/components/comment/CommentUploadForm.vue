@@ -71,7 +71,7 @@ const handleUploadCommentButton = async (e) => {
   flex-grow: 1;
   padding: 12px;
   border: 1px solid var(--vt-c-text-dark-2);
-  border-radius: 4px;
+  border-radius: 4px 0 0 4px;
 }
 
 .btn-uploadComment {
@@ -80,6 +80,6 @@ const handleUploadCommentButton = async (e) => {
   border: 1px solid var(--vt-c-text-dark-2);
   background-color: hsla(160, 100%, 37%, 1);
   color: var(--vt-c-white-soft);
-  border-radius: 4px;
+  border-radius: 0 4px 4px 0;
 }
 </style>

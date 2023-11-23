@@ -87,28 +87,21 @@ const getUsername = async () => {
   // console.log(route.params.userId.slice(1));
   await userStore.getUsername(route.params.userId.slice(1));
   user.username.value = userStore.username;
-  // console.log(user.username.value);
 };
 
 const getUploadList = async () => {
   await videoStore.getUploadList(user.id);
   tabs.value[0].content = videoStore.videoList;
-  // console.log(videoStore.videoList);
-  // console.log(tabs.value[0].content);
-  // console.log(currentList.value);
 };
 
 const getMyBookmarkList = async () => {
   await videoStore.getMyBookmarkList(user.id);
   tabs.value[1].content = videoStore.videoList;
-  // console.log(videoStore.videoList);
-  // console.log(tabs.value[1].content);
-  // console.log(currentList.value);
 };
 
 onMounted(() => {
   // 0. 로그인 안돼있어서 userId가 null이면 로그인페이지로 이동
-  if (route.params.userId.slice(1) === 'null') {
+  if (sessionStorage.getItem('userId') === null) {
     router.push('/login');
   }
 

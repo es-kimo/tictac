@@ -3,14 +3,15 @@
   <div class="cont-main">
     <SideNav />
     <div class="cont-right">
-      <template v-if="showHome">
+      <div class="cont-home" v-if="showHome">
+        <h2 class="tit-category">이런 스포츠도 있어요.</h2>
         <CategoryList @update-category="updateCategory" />
         <div>
-          <p>{{ categoryId }}</p>
-          <p>{{ categoryInfo }}</p>
+          <p class="txt-categoryId">{{ categoryId }}</p>
+          <p class="txt-categoryInfo">{{ categoryInfo }}</p>
         </div>
         <VideoList :category-id="categoryId" />
-      </template>
+      </div>
       <RouterView v-else />
     </div>
   </div>
@@ -29,15 +30,6 @@ const route = useRoute();
 //TODO: 문제 생길수도 있는 부분
 const showHome = computed(() => route.fullPath === '/');
 
-const categoryId = ref('파쿠르');
-const updateCategory = (category: string) => {
-  categoryId.value = category;
-  console.log(categoryId.value);
-  console.log(categoryInfo.value);
-  console.log(categoryMap);
-  console.log(categoryMap.get('파쿠르'));
-};
-
 const categoryMap = new Map();
 categoryMap.set('파쿠르', '맨몸으로 지형, 사물을 효율적으로 이용하여 이동하는 운동');
 categoryMap.set('스케이트보드', '스케이트보드를 타고 주행과 기술을 선보이는 자유로운 길거리문화');
@@ -45,32 +37,12 @@ categoryMap.set('카포에라', '춤, 무술, 음악이 결합돼서 만들어�
 categoryMap.set('광선검', '스타워즈 광선검 펜싱');
 categoryMap.set('독 어질리티', '개(dog) 장애물 달리기');
 
-const categoryInfo = computed(() => categoryMap.get(categoryId));
-// console.log(categoryMap.get(categoryId));
-// console.log(categoryInfo.value);
+const categoryId = ref('파쿠르');
+const categoryInfo = computed(() => categoryMap.get(categoryId.value));
 
-// const categoryInfo2 = [
-//   {
-//     id: '파쿠르',
-//     info: '맨몸으로 지형, 사물을 효율적으로 이용하여 이동하는 운동'
-//   },
-//   {
-//     id: '스케이트보드',
-//     info: '스케이트보드를 타고 주행과 기술을 선보이는 자유로운 길거리문화'
-//   },
-//   {
-//     id: '카포에라',
-//     info: '춤, 무술, 음악이 결합돼서 만들어진 브라질 전통 무술'
-//   },
-//   {
-//     id: '광선검',
-//     info: '스타워즈 광선검 펜싱'
-//   },
-//   {
-//     id: '독 어질리티',
-//     info: '개(dog) 장애물 달리기'
-//   },
-// ]
+const updateCategory = (category: string) => {
+  categoryId.value = category;
+};
 </script>
 
 <style scoped>
@@ -82,5 +54,25 @@ const categoryInfo = computed(() => categoryMap.get(categoryId));
 .cont-right {
   padding: 32px 24px 36px;
   width: 100%;
+}
+
+.cont-home {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.tit-category {
+  font-size: 20px;
+  font-weight: bold;
+}
+
+.txt-categoryId {
+  text-align: center;
+  font-size: 20px;
+  font-weight: bold;
+}
+.txt-categoryInfo {
+  text-align: center;
 }
 </style>

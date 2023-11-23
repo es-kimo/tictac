@@ -1,7 +1,7 @@
 <template>
   <header class="app-header">
     <h1 class="tit-header">
-      <RouterLink to="/">
+      <RouterLink to="/" class="link-home">
         <img src="@/assets/logo.png" alt="" />
       </RouterLink>
     </h1>
@@ -59,12 +59,18 @@ onMounted(() => {
   align-items: center;
   border-bottom: 1px solid var(--vt-c-text-dark-2);
 
-  padding: 0 16px 0 24px;
+  padding: 10px 16px 10px 24px;
 }
 
 .tit-header {
-  font-size: 42px;
-  font-weight: bolder;
+  height: fit-content;
+}
+
+.link-home {
+  display: inline-block;
+  border-radius: 8px;
+  overflow: hidden;
+  vertical-align: top;
 }
 
 .cont-nav {
