@@ -109,9 +109,6 @@ onMounted(() => {
 
   // 3. 찜한 동영상 통신 -> watch() 로 옮김
   // getMyBookmarkList();
-
-  console.log(tabs.value[0]);
-  // console.log(tabs[1].content);
 });
 
 // tab
