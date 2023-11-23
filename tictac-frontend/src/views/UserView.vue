@@ -1,47 +1,58 @@
 <template>
-  <div class="wrapper">
-    <BigProfile :user="user"></BigProfile>
-    <div class="cont-nav">
-      <ul class="list-nav" id="tabList">
-        <li v-for="tab in tabs" :key="tab.id">
-          <TabItem
-            v-bind="tab"
-            v-model:current-id="currentId"
-            v-model:current-width="currentWidth"
-          ></TabItem>
-        </li>
-      </ul>
-      <div :style="barStyle" class="bar"></div>
-    </div>
-
-    <section>
-      <h3 v-if="!isNotMyList" class="tit-video">동영상</h3>
-      <div v-if="isNotMyList" style="text-align: center">
-        <IconBase height="50" width="50">
-          <IconLock></IconLock>
-        </IconBase>
-        <p style="font-size: 25px">이 사용자가 즐겨찾기한 동영상은 비공개입니다.</p>
-        <p style="font-size: 20px">
-          {{ route.params.userId.slice(1) }} 님이 즐겨찾기한 동영상은 현재 숨겨져 있습니다.
-        </p>
+  <div>
+    <div class="wrapper" v-if="isExistUser">
+      <BigProfile :user="user"></BigProfile>
+      <div class="cont-nav">
+        <ul class="list-nav" id="tabList">
+          <li v-for="tab in tabs" :key="tab.id">
+            <TabItem
+              v-bind="tab"
+              v-model:current-id="currentId"
+              v-model:current-width="currentWidth"
+            ></TabItem>
+          </li>
+        </ul>
+        <div :style="barStyle" class="bar"></div>
       </div>
-      <ul class="list-video">
-        <!-- TODO: key 수정: videoList에서 코드 가져옴 -->
-        <li class="boxes">
-          <!-- <VideoCard :video="video"> </VideoCard> -->
-          <VideoCard
-            class="box"
-            @video-hover="handleHover"
-            v-for="video in currentList"
-            :video="video"
-          >
-            <template v-slot:outer>
-              <VideoInfo :content="video.content" :userId="video.userId" />
-            </template>
-          </VideoCard>
-        </li>
-      </ul>
-    </section>
+
+      <section>
+        <h3 v-if="!isNotMyList" class="tit-video">동영상</h3>
+        <div v-if="isNotMyList" style="text-align: center">
+          <IconBase height="50" width="50">
+            <IconLock></IconLock>
+          </IconBase>
+          <p style="font-size: 25px">이 사용자가 즐겨찾기한 동영상은 비공개입니다.</p>
+          <p style="font-size: 20px">
+            {{ route.params.userId.slice(1) }} 님이 즐겨찾기한 동영상은 현재 숨겨져 있습니다.
+          </p>
+        </div>
+        <ul class="list-video">
+          <!-- TODO: key 수정: videoList에서 코드 가져옴 -->
+          <li class="boxes">
+            <!-- <VideoCard :video="video"> </VideoCard> -->
+            <VideoCard
+              class="box"
+              @video-hover="handleHover"
+              v-for="video in currentList"
+              :video="video"
+            >
+              <template v-slot:outer>
+                <VideoInfo :content="video.content" :userId="video.userId" />
+              </template>
+            </VideoCard>
+          </li>
+        </ul>
+      </section>
+    </div>
+    <div v-if="!isExistUser" class="instruction">
+      <IconBase width="100px" height="100px">
+        <IconProfile></IconProfile>
+      </IconBase>
+      <p style="font-size: 25px">이 계정을 찾을 수 없음</p>
+      <p style="font-size: 20px">
+        동영상을 찾고 계시나요? 인기 있는 크리에이터, 해시태그 및 사운드를 찾아보세요.
+      </p>
+    </div>
   </div>
 </template>
 
@@ -57,6 +68,7 @@ import { routerKey, useRoute, useRouter } from 'vue-router';
 import { type Video } from '@/stores/video';
 import IconBase from '@/components/icon/IconBase.vue';
 import IconLock from '@/components/icon/IconLock.vue';
+import IconProfile from '@/components/icon/IconProfile.vue';
 
 const video1: Video = {
   videoId: 0,
@@ -83,10 +95,15 @@ const user = {
   id: route.params.userId.slice(1)
 };
 
+const isExistUser = ref(false);
+
 const getUsername = async () => {
-  // console.log(route.params.userId.slice(1));
   await userStore.getUsername(route.params.userId.slice(1));
   user.username.value = userStore.username;
+  // 있는 user만 마이페이지 뜨도록 함
+  if (user.username.value !== null && user.username.value !== '') {
+    isExistUser.value = true;
+  }
 };
 
 const getUploadList = async () => {
@@ -221,5 +238,10 @@ const handleHover = (showVideoRef: Ref<boolean>) => {
 .box {
   margin: 6px;
   min-width: 100px;
+}
+
+.instruction {
+  text-align: center;
+  padding-top: 300px;
 }
 </style>
