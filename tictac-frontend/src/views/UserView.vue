@@ -27,9 +27,14 @@
       </div>
       <ul class="list-video">
         <!-- TODO: key 수정: videoList에서 코드 가져옴 -->
-        <li>
+        <li class="boxes">
           <!-- <VideoCard :video="video"> </VideoCard> -->
-          <VideoCard @video-hover="handleHover" v-for="video in currentList" :video="video">
+          <VideoCard
+            class="box"
+            @video-hover="handleHover"
+            v-for="video in currentList"
+            :video="video"
+          >
             <template v-slot:outer>
               <VideoInfo :content="video.content" :userId="video.userId" />
             </template>
@@ -48,7 +53,7 @@ import VideoCard from '@/components/video/VideoCard.vue';
 import VideoInfo from '@/components/video/VideoInfo.vue';
 import { useVideoStore } from '@/stores/video';
 import { useUserStore } from '@/stores/user';
-import { useRoute } from 'vue-router';
+import { routerKey, useRoute, useRouter } from 'vue-router';
 import { type Video } from '@/stores/video';
 import IconBase from '@/components/icon/IconBase.vue';
 import IconLock from '@/components/icon/IconLock.vue';
@@ -71,6 +76,7 @@ const video1: Video = {
 const videoStore = useVideoStore();
 const userStore = useUserStore();
 const route = useRoute();
+const router = useRouter();
 
 const user = {
   username: ref<String>(),
@@ -101,6 +107,11 @@ const getMyBookmarkList = async () => {
 };
 
 onMounted(() => {
+  // 0. 로그인 안돼있어서 userId가 null이면 로그인페이지로 이동
+  if (route.params.userId.slice(1) === 'null') {
+    router.push('/login');
+  }
+
   // 1. url에 적힌 userId에 대응하는 username 받음
   getUsername();
 
@@ -208,5 +219,17 @@ const handleHover = (showVideoRef: Ref<boolean>) => {
   font-size: 16px;
   font-weight: bold;
   margin-bottom: 10px;
+}
+
+.boxes {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  flex-basis: 200px;
+}
+
+.box {
+  margin: 6px;
+  min-width: 100px;
 }
 </style>

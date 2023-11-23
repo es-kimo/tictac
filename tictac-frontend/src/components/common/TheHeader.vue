@@ -15,7 +15,7 @@
       </RouterLink>
       <RouterLink to="/login" class="btn-login" v-if="isLogin">로그인</RouterLink>
       <button v-else @click="logout" class="btn-login">로그아웃</button>
-      <RouterLink :to="'/@' + user.id">
+      <RouterLink :to="'/@' + user.id" v-if="!isLogin">
         <img class="img-profile" src="@/assets/sample/excitedinseun.png" alt="" />
       </RouterLink>
     </div>
