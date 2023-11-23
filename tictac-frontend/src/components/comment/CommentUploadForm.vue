@@ -15,13 +15,15 @@
 </template>
 
 <script setup>
-import { computed, ref } from 'vue';
+import { computed, ref, onMounted } from 'vue';
 import { useCommentStore } from '@/stores/comment';
 import { useRoute } from 'vue-router';
 import router from '@/router';
 
 const commentStore = useCommentStore();
 const route = useRoute();
+
+const inputElem = ref(null);
 
 const isFormFilled = computed(() => comment.value.content.length > 0);
 
@@ -36,6 +38,8 @@ function b64DecodeUnicode(str) {
 }
 
 const getLoginUser = () => {
+  if (!sessionStorage.getItem('access-token')) return;
+
   const token = sessionStorage.getItem('access-token').split('.');
   let loginInfo = token[1]; // 3개 중에 payload 고름
   loginInfo = b64DecodeUnicode(loginInfo);
@@ -52,12 +56,12 @@ const comment = ref({
   content: ''
 });
 
-const inputElem = ref(null);
 const emit = defineEmits(['uploadComment']);
 const handleUploadCommentButton = async (e) => {
   getLoginUser();
   emit('uploadComment', route.params.videoId, comment.value);
   inputElem.value.value = '';
+  comment.value.content = '';
 };
 </script>
 
@@ -81,5 +85,11 @@ const handleUploadCommentButton = async (e) => {
   background-color: hsla(160, 100%, 37%, 1);
   color: var(--vt-c-white-soft);
   border-radius: 0 4px 4px 0;
+}
+
+.btn-uploadComment:disabled {
+  background-color: var(--vt-c-text-dark-2);
+  color: var(--vt-c-divider-dark-1);
+  cursor: auto;
 }
 </style>
