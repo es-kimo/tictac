@@ -5,7 +5,7 @@
         <img src="@/assets/logo.png" alt="" />
       </RouterLink>
     </h1>
-    <SearchBar></SearchBar>
+    <!-- <SearchBar></SearchBar> -->
     <div class="cont-nav">
       <RouterLink to="/upload" class="btn-upload">
         <IconBase icon-name="upload">
