@@ -19,24 +19,20 @@
   </div>
 </template>
 
-<script setup>
-import { useCommentStore } from '@/stores/comment';
-import { useRoute, useRouter } from 'vue-router';
+<script setup lang="ts">
+import { useRoute } from 'vue-router';
 
-const router = useRouter();
 const route = useRoute();
-const commentStore = useCommentStore();
 
-const props = defineProps({
-  comment: Object
-});
+const props = defineProps(['comment']);
+
+const emit = defineEmits(['deleteComment']);
 
 // TODO: 생각해볼 문제 - 클라이언트에서 sessionStorage.setItem('userId', 'inseung') 등의 공격이 들어올 수 있음.
-const isSameUser = () => props.comment.userId === sessionStorage.getItem('userId');
+const isSameUser = () => props.comment!.userId === sessionStorage.getItem('userId');
 
-const handleDeleteCommentButton = async () => {
-  await commentStore.deleteComment(route.params.videoId, props.comment.commentId);
-  router.go(0);
+const handleDeleteCommentButton = () => {
+  emit('deleteComment', route.params.videoId, props.comment!.commentId);
 };
 </script>
 
