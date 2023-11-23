@@ -67,12 +67,12 @@ export const useUserStore = defineStore('user', () => {
   };
 
   const username = ref('');
-  
+
   const getUsername = function (userId: string) {
     return axios.get(`${REST_USER_API}/@${userId}`).then((response: any) => {
       username.value = response.data;
-  })
-};
+    });
+  };
 
   return { login, logout, loginUserId, loginUsername, loginEmail, getUsername, username };
 });
