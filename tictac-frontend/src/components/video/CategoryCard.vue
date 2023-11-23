@@ -94,11 +94,8 @@ const updateCategory = () => {
 .btn-category {
   display: inline-block;
   text-align: center;
-  /* display: flex;
-  justify-content: space-between; */
 
   position: absolute;
-  /* left: 50%; */
   bottom: 0;
   left: 0;
   right: 0;
@@ -109,7 +106,7 @@ const updateCategory = () => {
   font-weight: bolder;
   border-radius: 4px;
   color: var(--vt-c-white);
-  background-color: hsla(160, 100%, 37%, 1);
+  background-color: hsla(160, 100%, 37%, 0.9);
 }
 
 .btn-category:hover {

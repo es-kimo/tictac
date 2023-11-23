@@ -1,6 +1,6 @@
 <template>
   <ul class="list-category">
-    <li v-for="video in videoList">
+    <li v-for="video in videoList" :key="video.videoId">
       <CategoryCard
         @update-category="updateCategory"
         class="box"
@@ -58,15 +58,12 @@ const updateCategory = function (categoryId: string) {
 .list-category {
   display: flex;
   flex-direction: row;
-  justify-content: center;
   gap: 20px;
-  background-color: green;
 }
 
 .list-category li {
-  background-color: yellow;
-  width: 226px;
   height: 302px;
   flex-shrink: 0;
+  flex-basis: 226px;
 }
 </style>
