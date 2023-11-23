@@ -46,7 +46,7 @@
 
 <script setup lang="ts">
 import { onMounted, ref, type Ref, computed, type ComputedRef } from 'vue';
-import { useCommentStore } from '@/stores/comment';
+import { useCommentStore, type Comment } from '@/stores/comment';
 import { useVideoStore, type Video } from '@/stores/video';
 import { useRoute } from 'vue-router';
 
@@ -93,8 +93,13 @@ const deleteComment = async (videoId: number, commentId: number) => {
   commentDivElem.value!.scrollIntoView({ behavior: 'smooth' });
 };
 
-const uploadComment = async (videoId: number, content: string) => {
-  await commentStore.uploadComment(videoId, content);
+const uploadComment = async (videoId: number, comment: Comment) => {
+  if (!sessionStorage.getItem('userId')) {
+    router.push({ name: 'login' });
+    return;
+  }
+
+  await commentStore.uploadComment(videoId, comment);
   await commentStore.getCommentList(route.params.videoId);
   commentDivElem.value!.scrollIntoView({ behavior: 'smooth' });
 };
