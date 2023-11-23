@@ -10,10 +10,10 @@
             홈
           </RouterLink>
         </li>
-        <li>
+        <li v-if="isLogin">
           <RouterLink :to="'/@' + loginUserId">
             <IconBase stroke-width="0.5">
-              <IconHome></IconHome>
+              <IconProfile></IconProfile>
             </IconBase>
             마이페이지
           </RouterLink>
@@ -36,9 +36,13 @@
 <script setup lang="ts">
 import IconBase from '../icon/IconBase.vue';
 import IconHome from '../icon/IconHome.vue';
+import IconProfile from '../icon/IconProfile.vue';
 import { RouterLink } from 'vue-router';
+import { ref } from 'vue';
 
 const loginUserId = sessionStorage.getItem('userId');
+
+const isLogin = ref(loginUserId !== null);
 </script>
 
 <style scoped>
