@@ -86,16 +86,16 @@ export const useVideoStore = defineStore('video', () => {
   };
 
   // 영상 수정
-  const updateVideo = function (video: any) {
-    return axios.put(REST_VIDEO_API + '/video', video).then(() => {
-      // 메서드 부른 곳에서 router.go(0)해야함
+  const updateVideo = function (video: Video) {
+    return axios.put(REST_VIDEO_API + '/video', video).then((res) => {
+      console.log(res);
     });
   };
 
   // 영상 삭제
-  const deleteVideo = function (videoId: any) {
+  const deleteVideo = function (videoId: number) {
     return axios.delete(REST_VIDEO_API + `/video/`, {
-      data: {
+      params: {
         videoId: videoId
       }
     });
