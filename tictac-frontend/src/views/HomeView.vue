@@ -6,7 +6,7 @@
       <div class="cont-home" v-if="showHome">
         <h2 class="tit-category">이런 스포츠도 있어요.</h2>
         <CategoryList @update-category="updateCategory" />
-        <div>
+        <div ref="categoryInfoElem">
           <p class="txt-categoryId">{{ categoryId }}</p>
           <p class="txt-categoryInfo">{{ categoryInfo }}</p>
         </div>
@@ -40,8 +40,10 @@ categoryMap.set('독 어질리티', '개(dog) 장애물 달리기');
 const categoryId = ref('파쿠르');
 const categoryInfo = computed(() => categoryMap.get(categoryId.value));
 
+const categoryInfoElem: Ref<null | HTMLDivElement> = ref(null);
 const updateCategory = (category: string) => {
   categoryId.value = category;
+  categoryInfoElem.value!.scrollIntoView({ behavior: 'smooth' });
 };
 </script>
 
