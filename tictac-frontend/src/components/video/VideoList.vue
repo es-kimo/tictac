@@ -13,11 +13,12 @@
 <script setup lang="ts">
 import VideoCard from './VideoCard.vue';
 import VideoInfo from './VideoInfo.vue';
-import { onMounted, ref, type Ref } from 'vue';
+import { onMounted, ref, type Ref, watch, computed } from 'vue';
 import { useVideoStore } from '@/stores/video';
 import { type Video } from '@/stores/video';
 
 const videoStore = useVideoStore();
+const props = defineProps(['categoryId']);
 
 const queue: Ref<boolean>[] = [];
 const handleHover = (showVideoRef: Ref<boolean>) => {
@@ -36,11 +37,30 @@ const getWholeVideoList = async () => {
   videoList.value = videoStore.videoList;
 };
 
+const getCategoryList = async (categoryId: string) => {
+  await videoStore.getCategoryList(categoryId);
+  videoList.value = videoStore.videoList;
+};
+
 const videoList: Ref<Video[]> = ref([]);
 
 onMounted(() => {
-  getWholeVideoList();
+  getCategoryList(category.value);
 });
+
+const category = computed(() => {
+  return props.categoryId;
+});
+
+watch(
+  category,
+  (newValue) => {
+    console.log('카테고리 바꼈다');
+    queue.shift()!.value = false;
+    getCategoryList(category.value);
+  },
+  { deep: true }
+);
 </script>
 
 <style scoped>
