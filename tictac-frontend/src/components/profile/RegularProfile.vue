@@ -30,7 +30,6 @@ defineProps<Props>();
 
 <style scoped>
 .wrapper-profile {
-  max-width: 624px;
   min-width: 520px;
 
   display: flex;

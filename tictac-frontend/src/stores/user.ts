@@ -2,10 +2,6 @@ import { ref } from 'vue';
 import { defineStore } from 'pinia';
 import axios from 'axios';
 
-import { useRouter } from 'vue-router';
-
-const router = useRouter();
-
 const REST_USER_API = `http://localhost:8080`;
 
 function b64DecodeUnicode(str: string) {

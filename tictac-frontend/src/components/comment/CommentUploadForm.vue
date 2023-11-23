@@ -8,6 +8,7 @@
       name="content"
       placeholder="따뜻한 한 마디 전해주세요..."
       v-model="comment.content"
+      ref="inputElem"
     />
     <button type="submit" class="btn-uploadComment" :disabled="!isFormFilled">등록</button>
   </form>
@@ -16,12 +17,10 @@
 <script setup>
 import { computed, ref } from 'vue';
 import { useCommentStore } from '@/stores/comment';
-// import { useUserStore } from '@/stores/user';
 import { useRoute } from 'vue-router';
 import router from '@/router';
 
 const commentStore = useCommentStore();
-// const userStore = useUserStore();
 const route = useRoute();
 
 const isFormFilled = computed(() => comment.value.content.length > 0);
@@ -53,11 +52,12 @@ const comment = ref({
   content: ''
 });
 
-const handleUploadCommentButton = async () => {
+const inputElem = ref(null);
+const emit = defineEmits(['uploadComment']);
+const handleUploadCommentButton = async (e) => {
   getLoginUser();
-  console.log(comment.value);
-  await commentStore.uploadComment(route.params.videoId, comment.value);
-  router.go(0);
+  emit('uploadComment', route.params.videoId, comment.value);
+  inputElem.value.value = '';
 };
 </script>
 

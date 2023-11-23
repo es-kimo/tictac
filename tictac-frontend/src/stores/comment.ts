@@ -1,7 +1,6 @@
 import { ref } from 'vue';
 import { defineStore } from 'pinia';
 import axios from 'axios';
-import router from '@/router';
 
 export interface Comment {
   commentId: number;
@@ -13,7 +12,7 @@ export interface Comment {
 
 const REST_COMMENT_API = `http://localhost:8080`;
 
-export const useCommentStore = defineStore('user', () => {
+export const useCommentStore = defineStore('comment', () => {
   const commentList = ref([]);
   function getCommentList(videoId: any) {
     return axios.get(REST_COMMENT_API + `/video/${videoId}/comment`).then((response: any) => {
@@ -22,8 +21,7 @@ export const useCommentStore = defineStore('user', () => {
     });
   }
 
-  const uploadComment = function (videoId: Number, comment: any) {
-    console.log(comment.username);
+  const uploadComment = function (videoId: number, comment: any) {
     return axios({
       url: REST_COMMENT_API + `/video/${videoId}/comment`,
       method: 'POST',
@@ -38,17 +36,15 @@ export const useCommentStore = defineStore('user', () => {
         content: comment.content
       }
     })
-      .then(() => {
-        console.log('여기');
-        console.log(videoId);
-        //   router.go(0);
+      .then((res) => {
+        console.log(res);
       })
       .catch((err) => {
         console.log(err);
       });
   };
 
-  const deleteComment = function (videoId: Number, commentId: any) {
+  const deleteComment = function (videoId: number, commentId: any) {
     console.log(commentId);
     // return axios({
     //   url: REST_COMMENT_API + `/video/${videoId}/comment`,

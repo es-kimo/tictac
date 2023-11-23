@@ -3,66 +3,120 @@
     <div class="cont-video">
       <img ref="imgElem" src="" alt="background of video" class="img-background" />
       <video ref="videoElem" src="" class="video" controls></video>
+      <!-- <iframe ref="videoElem" src="" class="video" frameborder="0"></iframe> -->
     </div>
     <div class="cont-info">
-      <RegularProfile :user="user"></RegularProfile>
-      <p class="txt-title">{{ videoStore.video?.content }}</p>
-      <CommentUploadForm />
-      <CommentCard v-for="comment in commentStore.commentList" :comment="comment" />
+      <div class="cont-profile">
+        <RegularProfile :user="user"></RegularProfile>
+        <button v-if="!isUserUpdatingContent" class="btn-update" @click="handleUpdateVideoButton">
+          수정
+        </button>
+        <button v-if="!isUserUpdatingContent" class="btn-delete" @click="deleteVideo">삭제</button>
+      </div>
+      <p v-if="!isUserUpdatingContent" class="txt-content">{{ videoStore.video?.content }}</p>
+      <form v-else action="" style="display: flex" @submit.prevent="updateVideo">
+        <label class="sr-only" for="">내용 수정</label>
+        <input
+          ref="contentInputElem"
+          type="text"
+          class="inp-content"
+          :value="videoStore.video?.content"
+        />
+        <button class="btn-update">수정</button>
+      </form>
+    </div>
+    <div class="cont-comment">
+      <p class="tit-comment">댓글 {{ numberOfComment }}개</p>
+      <CommentUploadForm @upload-comment="uploadComment" />
+      <CommentCard
+        v-for="comment in commentStore.commentList"
+        :comment="comment"
+        @delete-comment="deleteComment"
+      />
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { onMounted, ref, type Ref } from 'vue';
+import { onMounted, ref, type Ref, computed, type ComputedRef } from 'vue';
 import { useCommentStore } from '@/stores/comment';
-import { useVideoStore } from '@/stores/video';
+import { useVideoStore, type Video } from '@/stores/video';
 import { useRoute } from 'vue-router';
 
 import CommentUploadForm from '@/components/comment/CommentUploadForm.vue';
 import CommentCard from '@/components/comment/CommentCard.vue';
 import RegularProfile from '@/components/profile/RegularProfile.vue';
-import type { User } from '@/stores/user';
+import { useUserStore, type User } from '@/stores/user';
+import router from '@/router';
 
 const LOCAL_SERVER = import.meta.env.VITE_LOCAL_SERVER;
 
-const user: User = {
-  userId: sessionStorage.getItem('userId')!,
-  username: sessionStorage.getItem('username')!
-};
+const user: Ref<User> = ref({
+  userId: '',
+  username: ''
+});
 
 const videoStore = useVideoStore();
 const commentStore = useCommentStore();
+const userStore = useUserStore();
 const route = useRoute();
 
-const videoElem: Ref<null | HTMLVideoElement> = ref(null);
+const videoElem: Ref<null | HTMLIFrameElement> = ref(null);
 const imgElem: Ref<null | HTMLImageElement> = ref(null);
+
+const numberOfComment = computed(() => commentStore.commentList.length);
 
 onMounted(async () => {
   await videoStore.getVideo(parseInt(route.params.videoId as string));
+  // video의 src를 자바스크립트로 주입하는 건 CORB를 유발하는 요소?
   videoElem.value!.src = `${LOCAL_SERVER}/stream/${videoStore.video!.videoSrc}`;
   imgElem.value!.src = `${LOCAL_SERVER}/thumbnail/${videoStore.video!.thumbnailImgSrc}`;
-  console.log(commentStore);
-  console.log(commentStore.getCommentList);
+  await userStore.getUsername(videoStore.video?.userId!);
+  user.value.userId = videoStore.video?.userId!;
+  user.value.username = userStore.username;
   await commentStore.getCommentList(route.params.videoId);
 });
 
-/*
-ie 지원
-if (location.href.indexOf('#reload') == -1) location.href += '#reload';
-*/
+const isUserUpdatingContent = ref(false);
+
+const deleteComment = async (videoId: number, commentId: number) => {
+  await commentStore.deleteComment(videoId, commentId);
+  await commentStore.getCommentList(route.params.videoId);
+};
+
+const uploadComment = async (videoId: number, content: string) => {
+  await commentStore.uploadComment(videoId, content);
+  await commentStore.getCommentList(route.params.videoId);
+};
+
+const handleUpdateVideoButton = () => {
+  isUserUpdatingContent.value = true;
+};
+const deleteVideo = async () => {
+  await videoStore.deleteVideo(parseInt(route.params.videoId as string));
+  router.push({ name: 'home' });
+};
+const contentInputElem: Ref<null | HTMLInputElement> = ref(null);
+const updateVideo = async () => {
+  const newVideo: Video = JSON.parse(JSON.stringify(videoStore.video));
+  console.log(newVideo);
+  newVideo.content = contentInputElem.value!.value;
+  console.log(newVideo);
+  await videoStore.updateVideo(newVideo);
+  isUserUpdatingContent.value = false;
+  await videoStore.getVideo(parseInt(route.params.videoId as string));
+};
 </script>
 
 <style scoped>
 .wrapper-videoview {
   display: flex;
   flex-direction: column;
-  gap: 20px;
 }
 
 .cont-video {
   width: 100%;
-  border-radius: 10px;
+  border-radius: 10px 10px 0 0;
   overflow: hidden;
   position: relative;
 }
@@ -82,10 +136,60 @@ if (location.href.indexOf('#reload') == -1) location.href += '#reload';
   z-index: -1;
 }
 
+.txt-content {
+  padding: 0 0 0 4px;
+}
+
 .cont-info {
+  background-color: var(--vt-c-text-dark-2);
   display: flex;
   flex-direction: column;
-  gap: 10px;
-  padding: 10px;
+  gap: 20px;
+  margin-bottom: 20px;
+  padding: 20px;
+  border-radius: 0 0 10px 10px;
+}
+
+.cont-profile {
+  display: flex;
+}
+
+.inp-content {
+  padding: 12px;
+  border: 1px solid var(--vt-c-text-dark-2);
+  border-radius: 4px;
+  background-color: var(--vt-c-white);
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.tit-comment {
+  font-size: 20px;
+  font-weight: bolder;
+}
+
+.btn-delete {
+  padding: 0 14px;
+  font-size: 16px;
+  border: 1px solid var(--vt-c-text-dark-2);
+  background-color: hsla(160, 100%, 37%, 1);
+  color: var(--vt-c-white-soft);
+  border-radius: 4px;
+}
+
+.btn-update {
+  padding: 0 14px;
+  font-size: 16px;
+  border: 1px solid var(--vt-c-text-dark-2);
+  background-color: var(--vt-c-white-soft);
+  margin-right: 10px;
+}
+
+.btn-delete:hover {
+  background-color: rgb(0, 165, 110);
+}
+
+.btn-update:hover {
+  background-color: var(--vt-c-text-dark-2);
 }
 </style>
