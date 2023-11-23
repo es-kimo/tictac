@@ -53,12 +53,11 @@
 
 	<update id="updateVideo">
 		UPDATE Video
-		SET content = #{content}, videoSrc = #{videoSrc}, regDate = now(),
-		thumbnailImgSrc = #{thumbnailImgSrc}, categoryId = #{categoryId}
+		SET content = #{content}
 		WHERE videoId = #{videoId}
 	</update>
 
-	<delete id="deleteVideo">
+	<delete id="deleteVideo" parameterType="Integer">
 		DELETE FROM Video
 		WHERE videoId = #{videoId}
 	</delete>
