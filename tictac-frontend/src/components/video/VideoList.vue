@@ -32,11 +32,6 @@ const handleHover = (showVideoRef: Ref<boolean>) => {
   }
 };
 
-const getWholeVideoList = async () => {
-  await videoStore.getWholeVideoList();
-  videoList.value = videoStore.videoList;
-};
-
 const getCategoryList = async (categoryId: string) => {
   await videoStore.getCategoryList(categoryId);
   videoList.value = videoStore.videoList;
@@ -55,8 +50,11 @@ const category = computed(() => {
 watch(
   category,
   (newValue) => {
-    console.log('카테고리 바꼈다');
-    queue.shift()!.value = false;
+    if (queue.length >= 1) {
+      while (queue.length > 0) {
+        queue.shift()!.value = false;
+      }
+    }
     getCategoryList(category.value);
   },
   { deep: true }

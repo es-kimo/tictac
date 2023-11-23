@@ -8,10 +8,14 @@
     <div class="cont-info">
       <div class="cont-profile">
         <RegularProfile :user="user"></RegularProfile>
-        <button v-if="!isUserUpdatingContent" class="btn-update" @click="handleUpdateVideoButton">
-          수정
-        </button>
-        <button v-if="!isUserUpdatingContent" class="btn-delete" @click="deleteVideo">삭제</button>
+        <template v-if="isSameUser">
+          <button v-if="!isUserUpdatingContent" class="btn-update" @click="handleUpdateVideoButton">
+            수정
+          </button>
+          <button v-if="!isUserUpdatingContent" class="btn-delete" @click="deleteVideo">
+            삭제
+          </button>
+        </template>
       </div>
       <p v-if="!isUserUpdatingContent" class="txt-content">{{ videoStore.video?.content }}</p>
       <form v-else action="" style="display: flex" @submit.prevent="updateVideo">
@@ -23,9 +27,12 @@
           :value="videoStore.video?.content"
         />
         <button class="btn-update">수정</button>
+        <button class="btn-update" type="button" @click="isUserUpdatingContent = false">
+          취소
+        </button>
       </form>
     </div>
-    <div class="cont-comment">
+    <div class="cont-comment" ref="commentDivElem">
       <p class="tit-comment">댓글 {{ numberOfComment }}개</p>
       <CommentUploadForm @upload-comment="uploadComment" />
       <CommentCard
@@ -66,6 +73,7 @@ const imgElem: Ref<null | HTMLImageElement> = ref(null);
 
 const numberOfComment = computed(() => commentStore.commentList.length);
 
+const isSameUser = computed(() => videoStore.video?.userId === sessionStorage.getItem('userId'));
 onMounted(async () => {
   await videoStore.getVideo(parseInt(route.params.videoId as string));
   // video의 src를 자바스크립트로 주입하는 건 CORB를 유발하는 요소?
@@ -78,15 +86,17 @@ onMounted(async () => {
 });
 
 const isUserUpdatingContent = ref(false);
-
+const commentDivElem: Ref<null | HTMLDivElement> = ref(null);
 const deleteComment = async (videoId: number, commentId: number) => {
   await commentStore.deleteComment(videoId, commentId);
   await commentStore.getCommentList(route.params.videoId);
+  commentDivElem.value!.scrollIntoView({ behavior: 'smooth' });
 };
 
 const uploadComment = async (videoId: number, content: string) => {
   await commentStore.uploadComment(videoId, content);
   await commentStore.getCommentList(route.params.videoId);
+  commentDivElem.value!.scrollIntoView({ behavior: 'smooth' });
 };
 
 const handleUpdateVideoButton = () => {
@@ -99,12 +109,17 @@ const deleteVideo = async () => {
 const contentInputElem: Ref<null | HTMLInputElement> = ref(null);
 const updateVideo = async () => {
   const newVideo: Video = JSON.parse(JSON.stringify(videoStore.video));
-  console.log(newVideo);
+
+  // 수정 내용이 같을 경우 요청을 보내지 않음.
+  if (newVideo.content === contentInputElem.value!.value) {
+    isUserUpdatingContent.value = false;
+    return;
+  }
+
   newVideo.content = contentInputElem.value!.value;
-  console.log(newVideo);
   await videoStore.updateVideo(newVideo);
-  isUserUpdatingContent.value = false;
   await videoStore.getVideo(parseInt(route.params.videoId as string));
+  isUserUpdatingContent.value = false;
 };
 </script>
 
@@ -112,6 +127,9 @@ const updateVideo = async () => {
 .wrapper-videoview {
   display: flex;
   flex-direction: column;
+  min-width: 520px;
+  max-width: 800px;
+  margin: 0 auto;
 }
 
 .cont-video {

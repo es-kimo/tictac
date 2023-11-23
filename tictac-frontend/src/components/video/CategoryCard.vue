@@ -1,38 +1,32 @@
 <template>
   <div class="wrapper">
     <div class="cont-video" @click="updateCategory">
-      <!-- <RouterLink :to="`/@${video.userId}/video/${video.videoId}`"> -->
-      <picture>
-        <img
-          @mouseover="emitHover"
-          :src="`${LOCAL_SERVER}/thumbnail/${video.thumbnailImgSrc}`"
-          alt="사진입니다."
-          class="img"
-        />
-      </picture>
-      <video
-        v-if="showVideoRef"
-        ref="videoElem"
-        muted="true"
-        autoplay
-        playsinline
-        preload="auto"
-        loop
-        class="video"
-      >
-        <source :src="`${LOCAL_SERVER}/stream/${video.videoSrc}`" />
-      </video>
+      <button>
+        <picture>
+          <img
+            @mouseover="emitHover"
+            :src="`${LOCAL_SERVER}/thumbnail/${video.thumbnailImgSrc}`"
+            alt="사진입니다."
+            class="img"
+          />
+        </picture>
+        <video
+          v-if="showVideoRef"
+          ref="videoElem"
+          muted="true"
+          autoplay
+          playsinline
+          preload="auto"
+          loop
+          class="video"
+        >
+          <source :src="`${LOCAL_SERVER}/stream/${video.videoSrc}`" />
+        </video>
+      </button>
 
-      <div class="cont-control">
+      <button class="btn-category">
         {{ video.categoryId }}
-        <!-- <button>
-            <IconBase v-if="showVolumeBtn" @click="handleVolumeBtn">
-              <IconVolumeUp v-if="showVolumeOn"></IconVolumeUp>
-              <IconVolumeOff v-else></IconVolumeOff>
-            </IconBase>
-          </button> -->
-      </div>
-      <!-- </RouterLink> -->
+      </button>
     </div>
     <slot name="outer"></slot>
   </div>
@@ -43,44 +37,17 @@ import { ref, computed } from 'vue';
 import type { Ref } from 'vue';
 import type { Video } from '@/stores/video';
 
-import IconBase from '../icon/IconBase.vue';
-import IconPlay from '../icon/IconPlay.vue';
-import IconVolumeUp from '../icon/IconVolumeUp.vue';
-import IconVolumeOff from '../icon/IconVolumeOff.vue';
-
 const LOCAL_SERVER = import.meta.env.VITE_LOCAL_SERVER;
 
 const emit = defineEmits(['videoHover', 'updateCategory']);
 const props = defineProps<{ video: Video }>();
 
-//TODO: 숫자를 1.7M 같은 형태로 가공하기
-
 //영상 호버 자동재생
 const videoElem: Ref<HTMLVideoElement | null> = ref(null);
 const showVideoRef: Ref<boolean> = ref(false);
-const showVolumeBtn = computed(() => showVideoRef.value);
 const emitHover = () => {
   emit('videoHover', showVideoRef, videoElem);
 };
-
-//볼륨 버튼 조작
-const showVolumeOn = ref(false);
-const handleVolumeBtn = () => {
-  showVolumeOn.value = !showVolumeOn.value;
-  videoElem.value!.muted = !videoElem.value!.muted;
-};
-
-//영상 모달 띄우기
-/*
-const router = useRouter();
-const addHashToLocation = () => {
-  history.pushState({}, '', '/@' + 'ryurlah' + '/video/' + encodeURIComponent(10000));
-};
-//10000 -> props.video.id
-<button @click="addHashToLocation">
-*/
-
-//
 
 const updateCategory = () => {
   emit('updateCategory', props.video.categoryId);
@@ -89,7 +56,7 @@ const updateCategory = () => {
 
 <style scoped>
 .wrapper {
-  width: 252px;
+  width: 100%;
   display: flex;
   flex-direction: column;
   gap: 4px;
@@ -124,7 +91,7 @@ const updateCategory = () => {
   /* aspect-ratio: 4/3; */
 }
 
-.cont-control {
+.btn-category {
   display: inline-block;
   text-align: center;
   /* display: flex;
@@ -143,5 +110,9 @@ const updateCategory = () => {
   border-radius: 4px;
   color: var(--vt-c-white);
   background-color: hsla(160, 100%, 37%, 1);
+}
+
+.btn-category:hover {
+  background-color: rgb(0, 165, 110);
 }
 </style>
