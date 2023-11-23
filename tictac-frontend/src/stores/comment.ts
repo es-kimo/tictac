@@ -3,11 +3,11 @@ import { defineStore } from 'pinia';
 import axios from 'axios';
 
 export interface Comment {
-  commentId: number;
+  commentId?: number;
   userId: string;
   username: string;
   content: string;
-  regDate: Date;
+  regDate?: Date;
 }
 
 const REST_COMMENT_API = `http://localhost:8080`;
@@ -21,7 +21,7 @@ export const useCommentStore = defineStore('comment', () => {
     });
   }
 
-  const uploadComment = function (videoId: number, comment: any) {
+  const uploadComment = function (videoId: number, comment: Comment) {
     return axios({
       url: REST_COMMENT_API + `/video/${videoId}/comment`,
       method: 'POST',
@@ -45,14 +45,6 @@ export const useCommentStore = defineStore('comment', () => {
   };
 
   const deleteComment = function (videoId: number, commentId: any) {
-    console.log(commentId);
-    // return axios({
-    //   url: REST_COMMENT_API + `/video/${videoId}/comment`,
-    //   method: 'DELETE',
-    //   data: {
-    //           commentId: commentId
-    //         }
-    //       });
     return axios.delete(REST_COMMENT_API + `/video/${videoId}/comment`, {
       params: {
         commentId: commentId
