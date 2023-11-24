@@ -1,6 +1,6 @@
 # TicTac!
 
-## 🚀 배포 URL
+## 🚀 서비스 이용
 
 - 로컬 테스트만 가능합니다.
 - 서비스 이용을 위한 예시 테스트 계정
@@ -11,10 +11,10 @@
 
 # 1. 프로젝트 개요
 
-- 이런 스포츠도 있어요, **TicTac! ✨**
+- 이런 스포츠도 있어요, **TicTac.**
 
 ```
-마이너 스포츠 영상 플랫폼.
+마이너 스포츠 영상 플랫폼!
 ```
 
 <br>
@@ -65,7 +65,7 @@
 
 ![ERD입니다.](.github/asset/ERDdiagram.png)
 
-🔍 ERD 포인트! foreign key 설정을 통해 테이블 간의 유기적으로 연결했습니다.
+🔍 Foreign key 설정을 통해 테이블을 유기적으로 연결했습니다.
 
 <br>
 
@@ -78,72 +78,35 @@
 
 ### 5.1.1. `type Video`
 
-```ts
-/**
- * Video 타입 정의
- * stores/video.ts
- */
-export interface Video {
-  videoId?: number;
-  userId?: string;
-  content?: string;
-  videoSrc?: string;
-  orgVideoSrc?: string;
-  regDate?: Date;
-  heartCnt?: number;
-  bookmarkCnt?: number;
-  viewCnt?: number;
-  thumbnailImgSrc?: string;
-  orgThumbnailImgSrc?: string;
-  categoryId?: string;
-}
-```
-
-대부분의 서버 통신이 이루어지는 store에 타입을 정의해두었습니다.
+|                            Java DTO                            |                            Typescript                             |
+| :------------------------------------------------------------: | :---------------------------------------------------------------: |
+| ![java dto](./.github/asset/videoDTO.PNG) model/dto/Video.java | ![typescrpt video](./.github/asset/typeVideo.PNG) stores/video.ts |
 
 ```ts
 /**
- * 사용 예시
+ * 예시 - 컴포넌트의 prop type 정의
  * component/VideoCard.vue
  */
 <script setup lang="ts">
 const props = defineProps<{ video: Video }>();
 </script>
-
-<template>
-  <RouterLink :to="`/@${video.userId}/video/${video.videoId}`">
-    <picture>
-      <img
-        :src="`http://localhost:8080/thumbnail/${video.thumbnailImgSrc}`"
-      />
-    </picture>
-  </RouterLink>
-</template>
 ```
 
-그 결과 아래와 같이 접근 가능한 프로퍼티들이 나열됩니다.
+|                                        Java Controller                                        |                           Typescript                           |
+| :-------------------------------------------------------------------------------------------: | :------------------------------------------------------------: |
+| ![java controller](./.github/asset/videoController.PNG) model/controller/VideoController.java | ![pinia store](./.github/asset/videoStore.PNG) stores/video.ts |
 
-![ERD입니다.](.github/asset/ts-video.png)
-덕분에 프론트 단의 video 객체를 사용할 때 프로퍼티 명을 헷갈리거나 틀리지 않을 수 있었습니다!
+🔍 Spring의 `Controller가 받는 인자`와 `클라이언트의 요청에 담길 내용`을 **타입 정의**를 통해 일치시켰습니다!
 
 <br>
 
 ## 5.2. Store의 비동기 통신 Action을 Promise화
 
-컴포넌트에서 Store의 비동기 통신 Action을 사용할 때, axios 통신이 다 끝난 후에 컴포넌트 단의 다음 로직이 동기적으로 실행되길 바랐습니다.
+컴포넌트에서 Store의 비동기 통신 Action을 사용할 때, axios 통신이 다 끝난 후에 컴포넌트 단의 로직이 순차적으로 실행되길 바랐습니다.
 
 ### ▶︎ 해결
 
-async가 붙은 함수가 promise 객체를 반환하도록 하고, await를 사용해서 비동기적 방식을 동기적으로 바꿔주었습니다.
-
-```jsx
-// LoginForm.vue
-
-const handleLoginButton = async () => {
-  await userStore.login(id.value, password.value);
-  router.push({ name: "home" });
-};
-```
+Store의 비동기 통신 Action 함수가 promise 객체를 반환하도록 설계하였습니다.
 
 ```js
 // login.ts
@@ -154,9 +117,26 @@ function login(id: string, pw: string) {
         // ...
 ```
 
+덕분에 컴포넌트 단에서 비동기 호출 이후 원하는 동작을 수행할 수 있었습니다.
+
+```jsx
+// LoginForm.vue
+
+const handleLoginButton = async () => {
+  await userStore.login(id.value, password.value);
+  router.push({ name: "home" });
+};
+```
+
 <br>
 
-## 6. TicTac 세부 명세
+## 6. 폴더 구조
+
+|                    Backend                     |                     Frontend                     |
+| :--------------------------------------------: | :----------------------------------------------: |
+| ![back folder](./.github/asset/folderBack.PNG) | ![front folder](./.github/asset/folderFront.PNG) |
+
+## 7. TicTac 세부 명세
 
 - 홈 페이지: 카테고리별 영상 목록 제공
 
@@ -178,13 +158,21 @@ function login(id: string, pw: string) {
 
 ![userPage](./.github/asset/userPage.PNG)
 
+- 영상 상세 페이지: 영상 스트리밍, 댓글 기능 제공
+
+![videoDetailPage](./.github/asset/videoDetail.PNG)
+
+🔍 **자연스러운 영상 배경**을 위해 썸네일을 블러처리한 후 백그라운드에 삽입했습니다.
+
+![comment](./.github/asset/comment.PNG)
+
 <br>
 
 ## 7. TicTac 컨벤션 및 협업 방식
 
 - 하루 2번 notion에서 morning scrum, wrapup scrum을 진행했습니다.
 
-- `eslint`, `prettier` 등을 활용해 일정 수준의 코드 품질을 유지했습니다.
+- `eslint`, `prettier` 등을 활용해 코드 스타일을 통일시켰습니다.
 
 - 각자의 브랜치를 만들어서 github으로 협업했습니다.
 
