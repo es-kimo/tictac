@@ -114,7 +114,7 @@ const props = defineProps<{ video: Video }>();
   <RouterLink :to="`/@${video.userId}/video/${video.videoId}`">
     <picture>
       <img
-        :src="`${LOCAL_SERVER}/thumbnail/${video.thumbnailImgSrc}`"
+        :src="`http://localhost:8080/thumbnail/${video.thumbnailImgSrc}`"
       />
     </picture>
   </RouterLink>
