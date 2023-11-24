@@ -38,7 +38,7 @@ public class WebConfig implements WebMvcConfigurer {
 	//CORS 에러를 해결하기 위해서 컨트롤러에 각각 작성을 할수도 있지만 공통처리(전역처리)라면 요기다 한방에 가넝
 	@Override
 	public void addCorsMappings(CorsRegistry registry) {
-		registry.addMapping("/**").allowedOrigins("http://localhost:5173").allowCredentials(true).allowedHeaders("*");
+		registry.addMapping("/**").allowedOriginPatterns("*").allowCredentials(true).allowedHeaders("*");
 	
 	}
 }
