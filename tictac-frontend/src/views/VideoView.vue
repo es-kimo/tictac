@@ -77,8 +77,8 @@ const isSameUser = computed(() => videoStore.video?.userId === sessionStorage.ge
 onMounted(async () => {
   await videoStore.getVideo(parseInt(route.params.videoId as string));
   // video의 src를 자바스크립트로 주입하는 건 CORB를 유발하는 요소?
-  videoElem.value!.src = `${LOCAL_SERVER}/stream/${videoStore.video!.videoSrc}`;
-  imgElem.value!.src = `${LOCAL_SERVER}/thumbnail/${videoStore.video!.thumbnailImgSrc}`;
+  videoElem.value!.src = `http://localhost:8080/stream/${videoStore.video!.videoSrc}`;
+  imgElem.value!.src = `http://localhost:8080/thumbnail/${videoStore.video!.thumbnailImgSrc}`;
   await userStore.getUsername(videoStore.video?.userId!);
   user.value.userId = videoStore.video?.userId!;
   user.value.username = userStore.username;

@@ -5,7 +5,7 @@
         <picture>
           <img
             @mouseover="emitHover"
-            :src="`${LOCAL_SERVER}/thumbnail/${video.thumbnailImgSrc}`"
+            :src="`http://localhost:8080/thumbnail/${video.thumbnailImgSrc}`"
             alt="사진입니다."
             class="img"
           />
@@ -20,7 +20,7 @@
           loop
           class="video"
         >
-          <source :src="`${LOCAL_SERVER}/stream/${video.videoSrc}`" />
+          <source :src="`http://localhost:8080/stream/${video.videoSrc}`" />
         </video>
       </RouterLink>
 
