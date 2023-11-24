@@ -21,10 +21,10 @@
 
 # 2. 팀원 소개
 
-|                                      류기현                                      |                                    황인승                                     |
-| :------------------------------------------------------------------------------: | :---------------------------------------------------------------------------: |
-| ![류기현의 프로필입니다.](https://avatars.githubusercontent.com/u/112453419?v=4) | ![황인승의 프로필입니다.](https://avatars.githubusercontent.com/InSeungHwang) |
-|               <a href="https://github.com/geekseal">🔗 GitHub </a>               |           <a href="https://github.com/InSeungHwang">🔗 GitHub </a>            |
+|                                                   류기현                                                    |                                                  황인승                                                  |
+| :---------------------------------------------------------------------------------------------------------: | :------------------------------------------------------------------------------------------------------: |
+| <img alt="류기현의 프로필입니다." src="https://avatars.githubusercontent.com/u/112453419?v=4" width="200"/> | <img alt="황인승의 프로필입니다." src="https://avatars.githubusercontent.com/InSeungHwang" width="200"/> |
+|                            <a href="https://github.com/geekseal">🔗 GitHub </a>                             |                         <a href="https://github.com/InSeungHwang">🔗 GitHub </a>                         |
 
 <br>
 
